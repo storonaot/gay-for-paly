@@ -8,6 +8,7 @@ import { Icon28Profile, Icon28SettingsOutline } from '@vkontakte/icons'
 
 import { PANELS } from './constants'
 import { AppContext } from './context'
+import Modal from './common/Modal'
 
 import Friends from './panels/Friends'
 import Settings from './panels/Settings'
@@ -16,15 +17,13 @@ import Home from './panels/Home'
 import Steam from './panels/Steam'
 import BattleNet from './panels/BattleNet'
 
-import Modal from './common/Modal'
-
 import { signIn } from './api'
 
 const App = () => {
   const [activePanel, setActivePanel] = useState({ name: PANELS.steam, id: 0 })
   const [activePopout, setActivePopout] = useState(null) // <ScreenSpinner size='large'/>
   const [user, setUser] = useState(null)
-  const [activeModal, setActiveModal] = useState(null)
+  const [activeModal, setActiveModal] = useState({ key: null })
 
   useEffect(() => {
     bridge.subscribe(({ detail: { type, data } }) => {
@@ -64,10 +63,10 @@ const App = () => {
     setActivePanel,
     activePopout,
     setActivePopout,
-    user,
-    setUser,
     activeModal,
     setActiveModal,
+    user,
+    setUser,
   }
 
   const tabbar = (
@@ -98,7 +97,7 @@ const App = () => {
 
   return (
     <AppContext.Provider value={AppContextValue}>
-      <Epic activeStory={activePanel} tabbar={tabbar}>
+      <Epic activeStory={activePanel.name} tabbar={tabbar}>
         <View
           id={PANELS.profile}
           activePanel={PANELS.profile}

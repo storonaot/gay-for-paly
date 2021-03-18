@@ -10,7 +10,6 @@ import { Group, Cell, Header, Avatar, Div, Button, Title } from '@vkontakte/vkui
 import { AppContext } from '../../context'
 
 import DotaImg from '../../assets/dota.jpg'
-import Dropdown from '../Dropdown'
 import { MODALS } from '../../constants'
 
 const list = [
@@ -35,7 +34,7 @@ const list = [
 export const GamePopup = () => {
   const { activeModal } = useContext(AppContext)
 
-  if (!activeModal) return null
+  console.log('activeModal', activeModal)
 
   const imgSrc = activeModal && activeModal.props ? activeModal.props.imgSrc : null
 
