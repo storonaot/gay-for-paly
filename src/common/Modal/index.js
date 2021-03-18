@@ -12,26 +12,21 @@ const Modal = ({ activeModal }) => {
   const { setActiveModal } = useContext(AppContext)
 
   return (
-    <ModalRoot activeModal={activeModal ? activeModal.key : null}>
+    <ModalRoot
+      activeModal={activeModal ? activeModal.key : null}
+      onClose={() => {
+        setActiveModal(null)
+      }}
+    >
       <ModalPage id="noop" />
-      <ModalCard
-        id={MODALS.gameItem}
-        onClose={() => {
-          setActiveModal(null)
-        }}
-      >
+      <ModalCard id={MODALS.gameItem}>
         <GamePopup />
       </ModalCard>
       <ModalCard id={MODALS.statusForm}>
         <StatusForm />
       </ModalCard>
-      <ModalCard
-        id={MODALS.storyPopup}
-        onClose={() => {
-          setActiveModal(null)
-        }}
-      >
-        <StoryPopup />
+      <ModalCard id={MODALS.storyPopup}>
+        <StoryPopup total={activeModal ? activeModal.total : 0} />
       </ModalCard>
     </ModalRoot>
   )
