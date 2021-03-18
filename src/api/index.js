@@ -1,6 +1,7 @@
 import bridge from '@vkontakte/vk-bridge'
 
-export const URL = 'https://gamer.super-app.studio/api'
+export const URL = 'https://gamer.super-app.studio//api'
+
 export const APP_ID = 7794620
 
 const getHeaders = () =>
