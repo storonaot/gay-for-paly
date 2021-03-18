@@ -1,17 +1,16 @@
 import React from 'react'
-import { IOS, Panel, PanelHeaderButton, PanelHeader, platform } from '@vkontakte/vkui'
-import { Icon24Back, Icon28ChevronBack } from '@vkontakte/icons'
+import { Panel, Group, Cell } from '@vkontakte/vkui'
 
 import Header from '../../common/Header'
 import { PANELS } from '../../constants'
 
-const osName = platform()
-
 const Settings = ({ id, title }) => {
   return (
     <Panel id={id}>
-      <Header title={title} goPrew={PANELS.profile} />
-      <h1>Settings</h1>
+      <Header title={title} />
+      <Group>
+        <Cell>Кто может видеть мой профиль</Cell>
+      </Group>
     </Panel>
   )
 }

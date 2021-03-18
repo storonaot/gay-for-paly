@@ -37,16 +37,7 @@ const App = () => {
       } catch (error) {
         console.error('error', error.message)
       }
-
-      // })
     }
-
-    // async function fetchData() {
-    //   const user = await bridge.send('VKWebAppGetUserInfo')
-
-    //   setUser(user)
-    //   setPopout(null)
-    // }
 
     fetchData()
   }, [])
