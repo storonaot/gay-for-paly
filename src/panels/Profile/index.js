@@ -12,7 +12,6 @@ import {
   Spacing,
   RichCell,
   Title,
-  IconButton,
   Caption,
   Subhead,
 } from '@vkontakte/vkui'
@@ -23,6 +22,8 @@ import Icon56DiamondOutline from '@vkontakte/icons/dist/56/diamond_outline'
 import { Icon12User } from '@vkontakte/icons'
 import Dropdown from '../../common/Dropdown'
 import Div from '@vkontakte/vkui/dist/components/Div/Div'
+import PanelHeader from '../../common/PanelHeader'
+import { PANELS } from '../../constants'
 
 const FavouriteGames = () => {
   let favoriteGames = [
