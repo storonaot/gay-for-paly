@@ -33,6 +33,12 @@ export const getUser = () =>
     method: 'GET',
   }).then(toJSON)
 
+export const setStatus = (status) =>
+  fetch(`${URL}/status`, {
+    ...defaultOptions,
+    method: 'POST',
+    body: JSON.stringify({ status }),
+  }).then(toJSON)
 
 export const getFriends = async (userIds) => {
   try {
@@ -47,7 +53,6 @@ export const getFriends = async (userIds) => {
       })
       userIds = response
     }
-
 
     return fetch(`${URL}/friends?user_ids=${userIds.join(',')}`, {
       ...defaultOptions,
