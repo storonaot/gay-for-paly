@@ -3,4 +3,6 @@ export const PANELS = {
   friends: 'friends',
   settings: 'settings',
   home: 'home',
+  steam: 'steam',
+  buttleNet: 'buttleNet',
 }

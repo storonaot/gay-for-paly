@@ -13,11 +13,13 @@ import Friends from './panels/Friends'
 import Settings from './panels/Settings'
 import Profile from './panels/Profile'
 import Home from './panels/Home'
+import Steam from './panels/Steam'
+import BattleNet from './panels/BattleNet'
 
 import { signIn } from './api'
 
 const App = () => {
-  const [activePanel, setActivePanel] = useState(PANELS.home)
+  const [activePanel, setActivePanel] = useState(PANELS.steam)
   const [activePopout, setActivePopout] = useState(null) // <ScreenSpinner size='large'/>
   const [user, setUser] = useState(null)
 
@@ -71,8 +73,8 @@ const App = () => {
         <Icon28UsersOutline />
       </TabbarItem>
       <TabbarItem
-        onClick={() => setActivePanel(PANELS.profile)}
-        selected={activePanel === PANELS.profile}
+        onClick={() => setActivePanel(PANELS.home)}
+        selected={activePanel === PANELS.home}
         text="Мой профиль"
       >
         <Icon28Profile />
@@ -94,13 +96,20 @@ const App = () => {
           <Profile id={PANELS.profile} title="Мой профиль" user={user} />
         </View>
         <View id={PANELS.settings} activePanel={PANELS.settings} popout={activePopout}>
-          <Settings id={PANELS.settings} title="Геймер" />
+          <Settings id={PANELS.settings} title="Настройки" />
         </View>
         <View id={PANELS.friends} activePanel={PANELS.friends} popout={activePopout}>
-          <Friends id={PANELS.friends} title="Геймер" />
+          <Friends id={PANELS.friends} title="Мои друзья" />
         </View>
         <View id={PANELS.home} activePanel={PANELS.home} popout={activePopout}>
           <Home id={PANELS.home} title="Геймер" user={user} />
+        </View>
+
+        <View id={PANELS.steam} activePanel={PANELS.steam} popout={activePopout}>
+          <Steam id={PANELS.steam} title="Мой Steam" />
+        </View>
+        <View id={PANELS.buttleNet} activePanel={PANELS.buttleNet} popout={activePopout}>
+          <BattleNet id={PANELS.buttleNet} title="Мой Battle.net" />
         </View>
       </Epic>
     </AppContext.Provider>

@@ -71,7 +71,7 @@ const Settings = ({ id, title }) => {
 
   return (
     <Panel id={id}>
-      <PanelHeader title={title} />
+      <PanelHeader title={title} goBack="home" />
       <Group>
         <Cell
           after={
