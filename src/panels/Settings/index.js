@@ -4,10 +4,9 @@ import { Icon28ChevronDownOutline } from '@vkontakte/icons'
 
 import PanelHeader from '../../common/PanelHeader'
 import Dropdown from '../../common/Dropdown'
-import { PANELS } from '../../constants'
 
 import SteamIcon from '../../assets/steam.jpg'
-import BattlenetIcon from '../../assets/battlenet.png'
+import BattlenetIcon from '../../assets/battlenet.jpg'
 
 import s from './styles.module.css'
 
