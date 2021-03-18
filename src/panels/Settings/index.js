@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Panel, Group, Cell, ActionSheetItem } from '@vkontakte/vkui'
+import React, { useContext, useEffect, useState } from 'react'
+import { Panel, Group, Cell, ActionSheetItem, Alert } from '@vkontakte/vkui'
 import { Icon28ChevronDownOutline } from '@vkontakte/icons'
 
 import PanelHeader from '../../common/PanelHeader'
@@ -9,6 +9,9 @@ import SteamIcon from '../../assets/steam.jpg'
 import BattlenetIcon from '../../assets/battlenet.jpg'
 
 import s from './styles.module.css'
+import { getUser } from '../../api'
+import { AppContext } from '../../context'
+import { MODALS } from '../../constants'
 
 const menu = [
   { id: 1, label: 'Все' },
@@ -16,15 +19,74 @@ const menu = [
   { id: 3, label: 'Никто' },
 ]
 
-const platforms = [
-  { id: 1, label: 'Steam', iconSrc: SteamIcon, connected: true },
-  { id: 2, label: 'Battle.net', iconSrc: BattlenetIcon, connected: false },
-  // { id: 3, label: 'VK Game', iconSrc: BattlenetIcon, connected: false },
-]
+const Settings = ({ id, title, user }) => {
+  const platforms = [
+    { id: 1, label: 'Steam', iconSrc: SteamIcon, connected: user ? user.steam_id : null },
+    { id: 2, label: 'Battle.net', iconSrc: BattlenetIcon, connected: false },
+    // { id: 3, label: 'VK Game', iconSrc: BattlenetIcon, connected: false },
+  ]
 
-const Settings = ({ id, title }) => {
-  // window.open()
   const [activeMenuItem, setActiveMenuItem] = useState(menu[0])
+
+  const { setActivePopout, setUser } = useContext(AppContext)
+
+  const connectSteam = () => {
+    setActivePopout(
+      <Alert
+        actions={[
+          {
+            title: 'Продолжить',
+            action: fetchUser,
+          },
+        ]}
+        onClose={() => {
+          setActivePopout(null)
+        }}
+        text="Подключение к аккаунту Steam"
+      />,
+    )
+
+    window.open(user.steam_link)
+    // 1. открываем модалку с кнопкой продолжить
+    // 2. открываем окно со стимом регистрируемся и окно закрывается
+    // 3. нажимаем на продолжить
+    // 4. отправляем запрос на юзера
+    // 5. если есть стим id - закрываем модалку и обновляем индикаторы
+    // 6. если нет показываем юзеру информацию о том что он не авторизовался с стиме и пусть попробует еще раз
+  }
+
+  const fetchUser = async () => {
+    const updatedUser = await getUser()
+
+    if (updatedUser) {
+      if (user.steam_id) setActivePopout(null)
+      else
+        setActivePopout(
+          <Alert
+            actions={[
+              {
+                title: 'Попробовать еще раз',
+                autoclose: true,
+                action: connectSteam,
+              },
+              {
+                title: 'Отмена',
+                autoclose: true,
+                mode: 'cancel',
+              },
+            ]}
+            onClose={() => {
+              setActivePopout(null)
+            }}
+            text="Не удалось подключиться к аккаунту Steam"
+          />,
+        )
+
+      setUser(user)
+    }
+  }
+
+  const connectBattleNet = () => {}
 
   const renderMenu = () => (
     <>
@@ -45,7 +107,9 @@ const Settings = ({ id, title }) => {
 
   const getAfterComponent = platform => {
     if (platform.connected) return null
-    return 'Подключить'
+    return (
+      <div onClick={platform.label === 'Steam' ? connectSteam : connectBattleNet}>Подключить</div>
+    )
   }
 
   const getIndicatorComponent = platform => {

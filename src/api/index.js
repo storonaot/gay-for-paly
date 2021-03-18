@@ -29,5 +29,6 @@ export const signIn = ({ first_name, last_name, avatar }) =>
 
 export const getUser = () =>
   fetch(`${URL}/sign-in`, {
+    ...defaultOptions,
     method: 'GET',
   }).then(toJSON)

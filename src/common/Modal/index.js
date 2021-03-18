@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { ModalRoot, ModalPage, ModalCard } from '@vkontakte/vkui'
+import { ModalRoot, ModalPage, ModalCard, Button, Title } from '@vkontakte/vkui'
 
 import { MODALS } from '../../constants'
 
@@ -12,20 +12,25 @@ const Modal = ({ activeModal }) => {
   const { setActiveModal } = useContext(AppContext)
 
   return (
-    <ModalRoot
-      activeModal={activeModal ? activeModal.key : null}
-      onClose={() => {
-        setActiveModal(null)
-      }}
-    >
+    <ModalRoot activeModal={activeModal ? activeModal.key : null}>
       <ModalPage id="noop" />
-      <ModalCard id={MODALS.gameItem}>
+      <ModalCard
+        id={MODALS.gameItem}
+        onClose={() => {
+          setActiveModal(null)
+        }}
+      >
         <GamePopup />
       </ModalCard>
       <ModalCard id={MODALS.statusForm}>
         <StatusForm />
       </ModalCard>
-      <ModalCard id={MODALS.storyPopup}>
+      <ModalCard
+        id={MODALS.storyPopup}
+        onClose={() => {
+          setActiveModal(null)
+        }}
+      >
         <StoryPopup />
       </ModalCard>
     </ModalRoot>

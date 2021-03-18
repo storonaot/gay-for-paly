@@ -20,7 +20,7 @@ import BattleNet from './panels/BattleNet'
 import { signIn } from './api'
 
 const App = () => {
-  const [activePanel, setActivePanel] = useState({ name: PANELS.home, id: 0 })
+  const [activePanel, setActivePanel] = useState({ name: PANELS.settings })
   const [activePopout, setActivePopout] = useState(null) // <ScreenSpinner size='large'/>
   const [user, setUser] = useState(null)
   const [activeModal, setActiveModal] = useState({ key: null })
@@ -36,7 +36,7 @@ const App = () => {
     })
 
     async function fetchData() {
-      // setActivePopout(<ScreenSpinner size="large" />)
+      setActivePopout(<ScreenSpinner size="large" />)
 
       try {
         const user = await bridge.send('VKWebAppGetUserInfo')
@@ -95,7 +95,9 @@ const App = () => {
     </Tabbar>
   )
 
-  return (
+  return !user ? (
+    <ScreenSpinner size="large" />
+  ) : (
     <AppContext.Provider value={AppContextValue}>
       <Epic activeStory={activePanel.name} tabbar={tabbar}>
         <View
@@ -111,8 +113,9 @@ const App = () => {
           activePanel={PANELS.settings}
           popout={activePopout}
           modal={<Modal activeModal={activeModal} />}
+          user={user}
         >
-          <Settings id={PANELS.settings} title="Настройки" />
+          <Settings id={PANELS.settings} title="Настройки" user={user} />
         </View>
         <View
           id={PANELS.friends}
