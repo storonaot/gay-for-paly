@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "homepage": "https://storonaot.github.io/gay-for-play/",
+  "homepage": "./",
   "scripts": {
     "start": "cross-env PORT=10888 HTTPS=true react-scripts start",
     "build": "react-scripts build",
     "tunnel": "vk-tunnel --insecure=1 --http-protocol=https --ws-protocol=wss --host=localhost --port=10888",
     "predeploy": "npm run build",
-    "deploy": "vk-miniapps-deploy"
+    "deploy": "vk-miniapps-deploy",
+    "lint-all": "eslint --fix --ext .js,.jsx src"
   },
   "keywords": [],
   "author": "",
@@ -17,7 +18,8 @@
   "devDependencies": {
     "cross-env": "^5.2.1",
     "react-hot-loader": "^4.13.0",
-    "react-scripts": "^4.0.3"
+    "react-scripts": "^4.0.3",
+    "prettier": "^2.2.1"
   },
   "dependencies": {
     "@vkontakte/icons": "^1.86.0",
