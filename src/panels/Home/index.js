@@ -27,25 +27,25 @@ const Home = ({ id, user, title }) => {
 
   const renderGames = () => (
     <>
-      <HorizontalCell size="m" header="Контра Сити">
+      <HorizontalCell size='m' header='Контра Сити'>
         <Avatar
           size={88}
-          mode="app"
-          src="https://sun9-24.userapi.com/c639120/v639120173/3fe6f/tgPr7lecAY4.jpg"
+          mode='app'
+          src='https://sun9-24.userapi.com/c639120/v639120173/3fe6f/tgPr7lecAY4.jpg'
         />
       </HorizontalCell>
-      <HorizontalCell size="m" header="Golden Valley">
+      <HorizontalCell size='m' header='Golden Valley'>
         <Avatar
           size={88}
-          mode="app"
-          src="https://sun9-71.userapi.com/c849220/v849220453/147ade/0MtQXKEVsiQ.jpg"
+          mode='app'
+          src='https://sun9-71.userapi.com/c849220/v849220453/147ade/0MtQXKEVsiQ.jpg'
         />
       </HorizontalCell>
-      <HorizontalCell size="m" header="Warma-geddon">
+      <HorizontalCell size='m' header='Warma-geddon'>
         <Avatar
           size={88}
-          mode="app"
-          src="https://sun9-45.userapi.com/c846418/v846418215/5cf20/Gd9mQ6dVXTw.jpg"
+          mode='app'
+          src='https://sun9-45.userapi.com/c846418/v846418215/5cf20/Gd9mQ6dVXTw.jpg'
         />
       </HorizontalCell>
     </>
@@ -58,10 +58,10 @@ const Home = ({ id, user, title }) => {
         <Group>
           <RichCell
             onClick={() => {
-              setActivePanel(PANELS.profile)
+              setActivePanel({ name: PANELS.profile, id: user.vk_user_id })
             }}
             multiline
-            caption="В игре 5 173 часа"
+            caption='В игре 5 173 часа'
             bottom={<UsersStack photos={[SteamIcon, BattlenetIcon]} />}
             before={user.avatar ? <Avatar src={user.avatar} size={72} /> : null}
           >
@@ -82,7 +82,7 @@ const Home = ({ id, user, title }) => {
               </Link>
             }
             indicator={
-              <Counter size="s" mode="secondary">
+              <Counter size='s' mode='secondary'>
                 {steamGamesTotal}
               </Counter>
             }
@@ -110,7 +110,7 @@ const Home = ({ id, user, title }) => {
               </Link>
             }
             indicator={
-              <Counter size="s" mode="secondary">
+              <Counter size='s' mode='secondary'>
                 {battlenetGamesTotal}
               </Counter>
             }

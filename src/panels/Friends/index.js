@@ -1,12 +1,13 @@
-import React from 'react'
+import React , {useContext} from 'react'
 import { Avatar, Group, Header, Panel, SimpleCell } from '@vkontakte/vkui'
 
 import { PANELS } from '../../constants'
 
 import PanelHeader from '../../common/PanelHeader'
-import { useState } from 'react/cjs/react.production.min'
+import { AppContext } from '../../context'
 
 const Friends = ({ id, title }) => {
+  const { setActivePanel } = useContext(AppContext)
   let friends = [
     {
       id: 1,
@@ -39,7 +40,11 @@ const Friends = ({ id, title }) => {
         {
           friends.map(friend => {
             return (
-              <SimpleCell description={friend.accounts.join(', ')}
+              <SimpleCell key={friend.id}
+                          onClick={() => {
+                            setActivePanel({ name: PANELS.profile, id: friend.id })
+                          }}
+                          description={friend.accounts.join(', ')}
                           before={<Avatar src={friend.avatar} />}>
                 {friend.first_name} {friend.last_name}
               </SimpleCell>
