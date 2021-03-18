@@ -36,7 +36,7 @@ const App = () => {
     })
 
     async function fetchData() {
-      setActivePopout(<ScreenSpinner size="large" />)
+      // setActivePopout(<ScreenSpinner size="large" />)
 
       try {
         const user = await bridge.send('VKWebAppGetUserInfo')

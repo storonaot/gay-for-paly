@@ -149,10 +149,10 @@ export const StoryPopup = () => {
 }
 
 const Profile = ({ id, user, title, userId }) => {
-  const isMyProfile = user.vk_user_id === userId
-  const { setActiveModal } = useContext(AppContext)
+  const isMyProfile = user ? user.vk_user_id === userId : false
+  const { setActiveModal, activePanel } = useContext(AppContext)
 
-  const [userInfo, setUserInfo] = useState(user)
+  const [userInfo, setUserInfo] = useState(user || {})
   useEffect(() => {
     if (isMyProfile) {
       setUserInfo(user)
@@ -176,7 +176,10 @@ const Profile = ({ id, user, title, userId }) => {
 
   return (
     <Panel id={id}>
-      <PanelHeader goBack={PANELS.home} title={isMyProfile ? title : userName} />
+      <PanelHeader
+        goBack={activePanel.goBack || PANELS.home}
+        title={isMyProfile ? title : userName}
+      />
       {userInfo && (
         <Group>
           <RichCell
