@@ -30,14 +30,9 @@ const list = [
   { id: 15, name: 'Dota 2', description: '1 448 часов', selected: false },
   { id: 16, name: 'Dota 2', description: '1 448 часов', selected: false },
 ]
+const imgSrc = 'https://sun9-24.userapi.com/c639120/v639120173/3fe6f/tgPr7lecAY4.jpg'
 
 export const GamePopup = () => {
-  const { activeModal } = useContext(AppContext)
-
-  console.log('activeModal', activeModal)
-
-  const imgSrc = activeModal && activeModal.props ? activeModal.props.imgSrc : null
-
   return (
     <Div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <img
@@ -71,7 +66,7 @@ export const GamePopup = () => {
   )
 }
 
-const PlatformDetails = ({ title, goBack }) => {
+const PlatformDetails = () => {
   const { setActiveModal } = useContext(AppContext)
 
   return (

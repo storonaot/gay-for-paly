@@ -18,10 +18,8 @@ import {
 import { AppContext } from '../../context'
 
 import Icon24UnfavoriteOutline from '@vkontakte/icons/dist/24/unfavorite_outline'
-import Icon20StoryOutline from '@vkontakte/icons/dist/20/story_outline'
 import Icon56DiamondOutline from '@vkontakte/icons/dist/56/diamond_outline'
-import { Icon12User } from '@vkontakte/icons'
-import Dropdown from '../../common/Dropdown'
+import { Icon12User, Icon28StoryOutline, Icon20StoryOutline } from '@vkontakte/icons'
 import Div from '@vkontakte/vkui/dist/components/Div/Div'
 import PanelHeader from '../../common/PanelHeader'
 import { MODALS, PANELS } from '../../constants'
@@ -184,7 +182,8 @@ const Profile = ({ id, user, title, userId }) => {
           <RichCell
             after={
               isMyProfile && (
-                <Icon20StoryOutline
+                <Icon28StoryOutline
+                  fill="var(--button_primary_background)"
                   onClick={() => {
                     setActiveModal({ key: MODALS.storyPopup })
                   }}
@@ -202,7 +201,7 @@ const Profile = ({ id, user, title, userId }) => {
                       setActiveModal({ key: MODALS.statusForm })
                     }}
                   >
-                    Статус
+                    Мой Статус
                   </span>
                 ) : (
                   'some status'

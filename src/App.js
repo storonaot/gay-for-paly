@@ -20,7 +20,7 @@ import BattleNet from './panels/BattleNet'
 import { signIn } from './api'
 
 const App = () => {
-  const [activePanel, setActivePanel] = useState({ name: PANELS.steam, id: 0 })
+  const [activePanel, setActivePanel] = useState({ name: PANELS.home, id: 0 })
   const [activePopout, setActivePopout] = useState(null) // <ScreenSpinner size='large'/>
   const [user, setUser] = useState(null)
   const [activeModal, setActiveModal] = useState({ key: null })
@@ -138,12 +138,7 @@ const App = () => {
         >
           <Steam id={PANELS.steam} title="Мой Steam" />
         </View>
-        <View
-          id={PANELS.buttleNet}
-          activePanel={PANELS.buttleNet}
-          popout={activePopout}
-          modal={<Modal activeModal={activeModal} />}
-        >
+        <View id={PANELS.buttleNet} activePanel={PANELS.buttleNet} popout={activePopout}>
           <BattleNet id={PANELS.buttleNet} title="Мой Battle.net" />
         </View>
       </Epic>

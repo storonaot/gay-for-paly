@@ -26,3 +26,8 @@ export const signIn = ({ first_name, last_name, avatar }) =>
     method: 'POST',
     body: JSON.stringify({ first_name, last_name, avatar }),
   }).then(toJSON)
+
+export const getUser = () =>
+  fetch(`${URL}/sign-in`, {
+    method: 'GET',
+  }).then(toJSON)

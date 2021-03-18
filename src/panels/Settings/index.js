@@ -23,6 +23,7 @@ const platforms = [
 ]
 
 const Settings = ({ id, title }) => {
+  // window.open()
   const [activeMenuItem, setActiveMenuItem] = useState(menu[0])
 
   const renderMenu = () => (

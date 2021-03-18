@@ -11,4 +11,5 @@ export const MODALS = {
   gameItem: 'gameItem',
   storyPopup: 'storyPopup',
   statusForm: 'statusForm',
+  gameItemHome: 'gameItemHome',
 }

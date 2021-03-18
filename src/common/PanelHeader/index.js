@@ -14,7 +14,7 @@ const PanelHeader = ({ title, goBack }) => {
         goBack && (
           <PanelHeaderButton
             onClick={() => {
-              setActivePanel(goBack)
+              setActivePanel({ name: goBack })
             }}
           >
             <Icon28ArrowLeftOutline />
