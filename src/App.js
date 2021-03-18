@@ -4,6 +4,7 @@ import { Epic, Tabbar, TabbarItem, View } from '@vkontakte/vkui'
 import '@vkontakte/vkui/dist/vkui.css'
 
 import Icon28UsersOutline from '@vkontakte/icons/dist/28/users_outline'
+import { Icon28Profile, Icon28SettingsOutline } from '@vkontakte/icons'
 
 import { PANELS } from './constants'
 import { AppContext } from './context'
@@ -15,7 +16,7 @@ import Profile from './panels/Profile'
 // import { signIn } from './api'
 
 const App = () => {
-  const [activePanel, setActivePanel] = useState(PANELS.profile)
+  const [activePanel, setActivePanel] = useState(PANELS.settings)
   const [activePopout, setActivePopout] = useState(null) // <ScreenSpinner size='large'/>
   const [user, setUser] = useState(null)
 
@@ -52,24 +53,23 @@ const App = () => {
       <TabbarItem
         onClick={() => setActivePanel(PANELS.friends)}
         selected={activePanel === PANELS.friends}
-        text="Friends"
+        text="Мои друзья"
       >
         <Icon28UsersOutline />
       </TabbarItem>
-
       <TabbarItem
         onClick={() => setActivePanel(PANELS.profile)}
         selected={activePanel === PANELS.profile}
-        text="Profile"
+        text="Мой профиль"
       >
-        <Icon28UsersOutline />
+        <Icon28Profile />
       </TabbarItem>
       <TabbarItem
         onClick={() => setActivePanel(PANELS.settings)}
         selected={activePanel === PANELS.settings}
-        text="Settings"
+        text="Настройки"
       >
-        <Icon28UsersOutline />
+        <Icon28SettingsOutline />
       </TabbarItem>
     </Tabbar>
   )

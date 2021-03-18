@@ -1,0 +1,10 @@
+.after {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  margin-right: 8px;
+  border: 1px solid #00000061;
+  border-radius: 6px;
+}

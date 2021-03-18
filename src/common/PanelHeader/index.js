@@ -1,10 +1,10 @@
 import React from 'react'
-import { PanelHeaderButton, PanelHeader } from '@vkontakte/vkui'
+import { PanelHeaderButton, PanelHeader as VKPanelHeader } from '@vkontakte/vkui'
 import { Icon28ArrowLeftOutline } from '@vkontakte/icons'
 
-const Header = ({ title, goBack }) => {
+const PanelHeader = ({ title, goBack }) => {
   return (
-    <PanelHeader
+    <VKPanelHeader
       left={
         goBack && (
           <PanelHeaderButton data-to={goBack}>
@@ -14,8 +14,8 @@ const Header = ({ title, goBack }) => {
       }
     >
       {title}
-    </PanelHeader>
+    </VKPanelHeader>
   )
 }
 
-export default Header
+export default PanelHeader

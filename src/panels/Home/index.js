@@ -1,9 +1,9 @@
 import React from 'react'
-import { Panel, Group, Cell, Header, Avatar } from '@vkontakte/vkui'
+import { Panel, Group, Cell, Avatar } from '@vkontakte/vkui'
 
 import PanelHeader from '../../common/PanelHeader'
 
-const Profile = ({ id, user, title }) => {
+const Home = ({ id, user, title }) => {
   return (
     <Panel id={id}>
       <PanelHeader>{title}</PanelHeader>
@@ -21,4 +21,4 @@ const Profile = ({ id, user, title }) => {
   )
 }
 
-export default Profile
+export default Home
