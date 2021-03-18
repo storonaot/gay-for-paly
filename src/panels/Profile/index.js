@@ -16,8 +16,6 @@ import {
   Subhead,
 } from '@vkontakte/vkui'
 
-import { PANELS } from '../../constants'
-
 import Icon24UnfavoriteOutline from '@vkontakte/icons/dist/24/unfavorite_outline'
 import Icon20StoryOutline from '@vkontakte/icons/dist/20/story_outline'
 import Icon56DiamondOutline from '@vkontakte/icons/dist/56/diamond_outline'
