@@ -6,3 +6,9 @@ export const PANELS = {
   steam: 'steam',
   buttleNet: 'buttleNet',
 }
+
+export const MODALS = {
+  gameItem: 'gameItem',
+  storyPopup: 'storyPopup',
+  statusForm: 'statusForm',
+}

@@ -7,4 +7,8 @@ export const AppContext = React.createContext({
   setActivePanel: noop,
   activePopout: null,
   setActivePopout: noop,
+  user: null,
+  setUser: noop,
+  activeModal: null,
+  setActiveModal: noop,
 })

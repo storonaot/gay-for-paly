@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import { ActionSheet } from '@vkontakte/vkui'
+import { ActionSheet, Group } from '@vkontakte/vkui'
 import { createPortal } from 'react-dom'
 
 import s from './styles.module.css'
@@ -68,7 +68,7 @@ const Dropdown = ({ children, content, iosCloseItem = null, onClose, ...props })
             onClose={handleCloseRequest}
             toggleRef={anchorElement}
           >
-            {content}
+            <Group>{content}</Group>
           </ActionSheet>,
           portalElement,
         )}

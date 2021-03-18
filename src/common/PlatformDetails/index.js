@@ -11,6 +11,7 @@ import { AppContext } from '../../context'
 
 import DotaImg from '../../assets/dota.jpg'
 import Dropdown from '../Dropdown'
+import { MODALS } from '../../constants'
 
 const list = [
   { id: 1, name: 'Dota 2', description: '1 448 часов', selected: true },
@@ -31,7 +32,13 @@ const list = [
   { id: 16, name: 'Dota 2', description: '1 448 часов', selected: false },
 ]
 
-const GamePopup = ({ imgSrc }) => {
+export const GamePopup = () => {
+  const { activeModal } = useContext(AppContext)
+
+  if (!activeModal) return null
+
+  const imgSrc = activeModal && activeModal.props ? activeModal.props.imgSrc : null
+
   return (
     <Div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <img
@@ -59,32 +66,28 @@ const GamePopup = ({ imgSrc }) => {
         Поделиться в истории
       </Button>
       <Button mode="secondary" size="l" stretched before={<Icon24FavoriteOutline />}>
-        Добавить игру в избранное
+        Добавить игру в избранное13
       </Button>
     </Div>
   )
 }
 
 const PlatformDetails = ({ title, goBack }) => {
-  const { setActivePanel } = useContext(AppContext)
+  const { setActiveModal } = useContext(AppContext)
 
   return (
     <Group header={<Header mode="secondary">16 игр</Header>}>
       {list.map(item => (
-        <Dropdown content={<GamePopup imgSrc={DotaImg} />}>
-          {({ open, setAnchorElement }) => (
-            <div ref={setAnchorElement}>
-              <Cell
-                onClick={open}
-                description={item.description}
-                before={<Avatar mode="app" src={DotaImg} />}
-                after={item.selected ? <Icon28Favorite /> : <Icon28FavoriteOutline />}
-              >
-                {item.name}
-              </Cell>
-            </div>
-          )}
-        </Dropdown>
+        <Cell
+          onClick={() => {
+            setActiveModal({ key: MODALS.gameItem, props: { imgSrc: DotaImg } })
+          }}
+          description={item.description}
+          before={<Avatar mode="app" src={DotaImg} />}
+          after={item.selected ? <Icon28Favorite /> : <Icon28FavoriteOutline />}
+        >
+          {item.name}
+        </Cell>
       ))}
     </Group>
   )

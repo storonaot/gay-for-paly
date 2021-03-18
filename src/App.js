@@ -16,12 +16,15 @@ import Home from './panels/Home'
 import Steam from './panels/Steam'
 import BattleNet from './panels/BattleNet'
 
+import Modal from './common/Modal'
+
 import { signIn } from './api'
 
 const App = () => {
   const [activePanel, setActivePanel] = useState({ name: PANELS.steam, id: 0 })
   const [activePopout, setActivePopout] = useState(null) // <ScreenSpinner size='large'/>
   const [user, setUser] = useState(null)
+  const [activeModal, setActiveModal] = useState(null)
 
   useEffect(() => {
     bridge.subscribe(({ detail: { type, data } }) => {
@@ -34,7 +37,7 @@ const App = () => {
     })
 
     async function fetchData() {
-      setActivePopout(<ScreenSpinner size='large' />)
+      setActivePopout(<ScreenSpinner size="large" />)
 
       try {
         const user = await bridge.send('VKWebAppGetUserInfo')
@@ -61,6 +64,10 @@ const App = () => {
     setActivePanel,
     activePopout,
     setActivePopout,
+    user,
+    setUser,
+    activeModal,
+    setActiveModal,
   }
 
   const tabbar = (
@@ -68,21 +75,21 @@ const App = () => {
       <TabbarItem
         onClick={() => setActivePanel({ name: PANELS.friends, id: 0 })}
         selected={activePanel.name === PANELS.friends}
-        text='Мои друзья'
+        text="Мои друзья"
       >
         <Icon28UsersOutline />
       </TabbarItem>
       <TabbarItem
         onClick={() => setActivePanel({ name: PANELS.home, id: 0 })}
         selected={activePanel.name === PANELS.home}
-        text='Мой профиль'
+        text="Мой профиль"
       >
         <Icon28Profile />
       </TabbarItem>
       <TabbarItem
         onClick={() => setActivePanel({ name: PANELS.settings, id: 0 })}
         selected={activePanel.name === PANELS.settings}
-        text='Настройки'
+        text="Настройки"
       >
         <Icon28SettingsOutline />
       </TabbarItem>
@@ -91,24 +98,54 @@ const App = () => {
 
   return (
     <AppContext.Provider value={AppContextValue}>
-      <Epic activeStory={activePanel.name} tabbar={tabbar}>
-        <View id={PANELS.profile} activePanel={PANELS.profile} popout={activePopout}>
-          <Profile id={PANELS.profile} title='Мой профиль' userId={activePanel.id} user={user} />
+      <Epic activeStory={activePanel} tabbar={tabbar}>
+        <View
+          id={PANELS.profile}
+          activePanel={PANELS.profile}
+          popout={activePopout}
+          modal={<Modal activeModal={activeModal} />}
+        >
+          <Profile id={PANELS.profile} title="Мой профиль" userId={activePanel.id} user={user} />
         </View>
-        <View id={PANELS.settings} activePanel={PANELS.settings} popout={activePopout}>
-          <Settings id={PANELS.settings} title='Настройки' />
+        <View
+          id={PANELS.settings}
+          activePanel={PANELS.settings}
+          popout={activePopout}
+          modal={<Modal activeModal={activeModal} />}
+        >
+          <Settings id={PANELS.settings} title="Настройки" />
         </View>
-        <View id={PANELS.friends} activePanel={PANELS.friends} popout={activePopout}>
-          <Friends id={PANELS.friends} title='Мои друзья' />
+        <View
+          id={PANELS.friends}
+          activePanel={PANELS.friends}
+          popout={activePopout}
+          modal={<Modal activeModal={activeModal} />}
+        >
+          <Friends id={PANELS.friends} title="Мои друзья" />
         </View>
-        <View id={PANELS.home} activePanel={PANELS.home} popout={activePopout}>
-          <Home id={PANELS.home} title='Геймер' user={user} />
+        <View
+          id={PANELS.home}
+          activePanel={PANELS.home}
+          popout={activePopout}
+          modal={<Modal activeModal={activeModal} />}
+        >
+          <Home id={PANELS.home} title="Геймер" user={user} />
         </View>
-        <View id={PANELS.steam} activePanel={PANELS.steam} popout={activePopout}>
-          <Steam id={PANELS.steam} title='Мой Steam' />
+        <View
+          id={PANELS.steam}
+          activePanel={PANELS.steam}
+          popout={activePopout}
+          modal={<Modal activeModal={activeModal} />}
+        >
+          <Steam id={PANELS.steam} title="Мой Steam" />
         </View>
-        <View id={PANELS.buttleNet} activePanel={PANELS.buttleNet} popout={activePopout}>
-          <BattleNet id={PANELS.buttleNet} title='Мой Battle.net' />
+        <View
+          id={PANELS.buttleNet}
+          activePanel={PANELS.buttleNet}
+          popout={activePopout}
+          modal={<Modal activeModal={activeModal} />}
+        >
+          <BattleNet id={PANELS.buttleNet} title="Мой Battle.net" />
         </View>
       </Epic>
     </AppContext.Provider>

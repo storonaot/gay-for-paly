@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import {
   Panel,
   Group,
@@ -15,6 +15,7 @@ import {
   Caption,
   Subhead,
 } from '@vkontakte/vkui'
+import { AppContext } from '../../context'
 
 import Icon24UnfavoriteOutline from '@vkontakte/icons/dist/24/unfavorite_outline'
 import Icon20StoryOutline from '@vkontakte/icons/dist/20/story_outline'
@@ -23,7 +24,7 @@ import { Icon12User } from '@vkontakte/icons'
 import Dropdown from '../../common/Dropdown'
 import Div from '@vkontakte/vkui/dist/components/Div/Div'
 import PanelHeader from '../../common/PanelHeader'
-import { PANELS } from '../../constants'
+import { MODALS, PANELS } from '../../constants'
 
 const FavouriteGames = ({ showAction }) => {
   let favoriteGames = [
@@ -45,12 +46,12 @@ const FavouriteGames = ({ showAction }) => {
 
   return (
     <Group>
-      <Header mode='primary'>Любимые игры</Header>
+      <Header mode="primary">Любимые игры</Header>
       {favoriteGames.map(game => {
         return (
           <SimpleCell
             key={game.id}
-            before={<Avatar mode='app' size={32} src={game.avatar} />}
+            before={<Avatar mode="app" size={32} src={game.avatar} />}
             description={game.description}
             after={showAction && <Icon24UnfavoriteOutline />}
           >
@@ -84,12 +85,12 @@ const Accounts = () => {
 
   return (
     <Group>
-      <Header mode='primary'>Аккаунты</Header>
+      <Header mode="primary">Аккаунты</Header>
       {accounts.map(account => {
         return (
           <SimpleCell
             key={account.id}
-            before={<Avatar mode='app' size={32} src={account.avatar} />}
+            before={<Avatar mode="app" size={32} src={account.avatar} />}
             description={
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Icon12User /> {account.nickname}
@@ -105,19 +106,19 @@ const Accounts = () => {
   )
 }
 
-const StatusForm = () => {
+export const StatusForm = () => {
   return (
     <FormLayout>
       <FormItem>
-        <Title level='2' style={{ textAlign: 'center' }} weight='medium'>
+        <Title level="2" style={{ textAlign: 'center' }} weight="medium">
           Статус
         </Title>
       </FormItem>
       <FormItem>
-        <Input type='text' />
+        <Input type="text" />
       </FormItem>
       <FormItem>
-        <Button size='l' stretched>
+        <Button size="l" stretched>
           Сохранить
         </Button>
       </FormItem>
@@ -125,24 +126,24 @@ const StatusForm = () => {
   )
 }
 
-const StoryPopup = () => {
+export const StoryPopup = () => {
   return (
     <Div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <Icon56DiamondOutline fill='var(--accent)' />
+      <Icon56DiamondOutline fill="var(--accent)" />
       <Spacing size={17} />
-      <Title level='2' style={{ textAlign: 'center' }} weight='medium'>
+      <Title level="2" style={{ textAlign: 'center' }} weight="medium">
         5 173 часов
       </Title>
       <Spacing size={8} />
-      <Subhead style={{ color: 'var(--text_subhead)' }} weight='regular'>
+      <Subhead style={{ color: 'var(--text_subhead)' }} weight="regular">
         проведено в играх Steam и Battle.net
       </Subhead>
       <Spacing size={20} />
-      <Caption style={{ color: 'var(--text_placeholder)' }} level='1' weight='regular'>
+      <Caption style={{ color: 'var(--text_placeholder)' }} level="1" weight="regular">
         Это больше, чем у 99% пользователей
       </Caption>
       <Spacing size={32} />
-      <Button before={<Icon20StoryOutline />} size='l' stretched>
+      <Button before={<Icon20StoryOutline />} size="l" stretched>
         Поделиться в истории
       </Button>
     </Div>
@@ -151,6 +152,7 @@ const StoryPopup = () => {
 
 const Profile = ({ id, user, title, userId }) => {
   const isMyProfile = user.vk_user_id === userId
+  const { setActiveModal } = useContext(AppContext)
 
   const [userInfo, setUserInfo] = useState(user)
   useEffect(() => {
@@ -159,10 +161,12 @@ const Profile = ({ id, user, title, userId }) => {
     } else {
       //fetch
       setUserInfo({
-        avatar: 'https://sun9-58.userapi.com/s/v1/if1/dbx2eFAQIxeioLvvHMiftCUlx41z97gfu_9-v-EF9lpXIsBb3gv8KeBFcCM3W9fA-44zJgbB.jpg?size=200x0&quality=96&crop=0,0,1365,1365&ava=1',
+        avatar:
+          'https://sun9-58.userapi.com/s/v1/if1/dbx2eFAQIxeioLvvHMiftCUlx41z97gfu_9-v-EF9lpXIsBb3gv8KeBFcCM3W9fA-44zJgbB.jpg?size=200x0&quality=96&crop=0,0,1365,1365&ava=1',
         first_name: 'Шпак',
         last_name: 'Геннадий',
-        steam_attach_link: 'https://steamcommunity.com/openid/login?openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.mode=checkid_setup&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&openid.realm=https%3A%2F%2Fgamer.super-app.studio%2F&openid.return_to=https%3A%2F%2Fgamer.super-app.studio%2Fsignin%2Fcallback%2FeGtvcDRYZ3J4THJPbHYzamZVRTR4clVLTVlfRC0wdzhGM093dTlCaU9RY2pLQTdZRU1yNWVPRzU5cm5rMWdDQTF5S19YNnNuVTRKM2dZMldjNDZ1S2liRnVLMWxvd2NITzNDVTNmTWE2bl9IdUlrQkcyVzZSWjlhTzkyc2hWU3Fvak5LSzdSZHlyNUVqRjVyWlRiSDQwVGd0dnB5alRLM0dMWnNrUWJJcFdIWTlpb2xzLUFNMHpvN1ZtZXkxUkZ3OTctN2YtVDJ5cTFyTzNQemFZLV8tTlJkVEgyVHlpYzNaSF9wUlNZZlZQTk16REhTeXh4ZHRwTTZON1RYWnJGT1JaX2VMQU9fTzdLb2hRX2pWa1RMbkdMbUowX3dmZVM4MkVlem1wWHlPOHJOaUNoS0I0VnBzS2xhQzh3VDA2SENPM1A1ODREdXZqckhIeVB4WWRmWDdGZ0dIRlJMRnZhblo1Z2pSdWxPNk5z',
+        steam_attach_link:
+          'https://steamcommunity.com/openid/login?openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.mode=checkid_setup&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&openid.realm=https%3A%2F%2Fgamer.super-app.studio%2F&openid.return_to=https%3A%2F%2Fgamer.super-app.studio%2Fsignin%2Fcallback%2FeGtvcDRYZ3J4THJPbHYzamZVRTR4clVLTVlfRC0wdzhGM093dTlCaU9RY2pLQTdZRU1yNWVPRzU5cm5rMWdDQTF5S19YNnNuVTRKM2dZMldjNDZ1S2liRnVLMWxvd2NITzNDVTNmTWE2bl9IdUlrQkcyVzZSWjlhTzkyc2hWU3Fvak5LSzdSZHlyNUVqRjVyWlRiSDQwVGd0dnB5alRLM0dMWnNrUWJJcFdIWTlpb2xzLUFNMHpvN1ZtZXkxUkZ3OTctN2YtVDJ5cTFyTzNQemFZLV8tTlJkVEgyVHlpYzNaSF9wUlNZZlZQTk16REhTeXh4ZHRwTTZON1RYWnJGT1JaX2VMQU9fTzdLb2hRX2pWa1RMbkdMbUowX3dmZVM4MkVlem1wWHlPOHJOaUNoS0I0VnBzS2xhQzh3VDA2SENPM1A1ODREdXZqckhIeVB4WWRmWDdGZ0dIRlJMRnZhblo1Z2pSdWxPNk5z',
         steam_id: null,
         steam_link: null,
         vk_user_id: 31667848,
@@ -178,28 +182,31 @@ const Profile = ({ id, user, title, userId }) => {
       {userInfo && (
         <Group>
           <RichCell
-            after={isMyProfile &&
-            <Dropdown content={<StoryPopup />}>
-              {({ open, setAnchorElement }) => (
-                <div ref={setAnchorElement}>
-                  <Icon20StoryOutline onClick={open} />
-                </div>
-              )}
-            </Dropdown>
+            after={
+              isMyProfile && (
+                <Icon20StoryOutline
+                  onClick={() => {
+                    setActiveModal({ key: MODALS.storyPopup })
+                  }}
+                />
+              )
             }
             before={userInfo.avatar ? <Avatar src={userInfo.avatar} size={72} /> : null}
             caption={
               <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <Spacing size={4} />
-                {isMyProfile ? <Dropdown content={<StatusForm />}>
-                  {({ open, setAnchorElement }) => (
-                    <div ref={setAnchorElement}>
-                      <span style={{ color: '#4986CC' }} onClick={open}>
-                        Статус
-                      </span>
-                    </div>
-                  )}
-                </Dropdown> : 'some status'}
+                {isMyProfile ? (
+                  <span
+                    style={{ color: '#4986CC' }}
+                    onClick={() => {
+                      setActiveModal({ key: MODALS.statusForm })
+                    }}
+                  >
+                    Статус
+                  </span>
+                ) : (
+                  'some status'
+                )}
                 <Spacing size={4} />
                 <span>Всего в игре: 5 173 часов</span>
               </div>
