@@ -170,9 +170,11 @@ const Profile = ({ id, user, title, userId }) => {
     }
   }, [])
 
+  const userName = `${userInfo.first_name} ${userInfo.last_name}`
+
   return (
     <Panel id={id}>
-      <PanelHeader goBack={PANELS.home} title={title} />
+      <PanelHeader goBack={PANELS.home} title={isMyProfile ? title : userName} />
       {userInfo && (
         <Group>
           <RichCell
@@ -203,7 +205,7 @@ const Profile = ({ id, user, title, userId }) => {
               </div>
             }
           >
-            {`${userInfo.first_name} ${userInfo.last_name}`}
+            {userName}
           </RichCell>
         </Group>
       )}
