@@ -19,7 +19,7 @@ import BattleNet from './panels/BattleNet'
 import { signIn } from './api'
 
 const App = () => {
-  const [activePanel, setActivePanel] = useState(PANELS.steam)
+  const [activePanel, setActivePanel] = useState({ name: PANELS.steam, id: 0 })
   const [activePopout, setActivePopout] = useState(null) // <ScreenSpinner size='large'/>
   const [user, setUser] = useState(null)
 
@@ -34,7 +34,7 @@ const App = () => {
     })
 
     async function fetchData() {
-      setActivePopout(<ScreenSpinner size="large" />)
+      setActivePopout(<ScreenSpinner size='large' />)
 
       try {
         const user = await bridge.send('VKWebAppGetUserInfo')
@@ -66,23 +66,23 @@ const App = () => {
   const tabbar = (
     <Tabbar>
       <TabbarItem
-        onClick={() => setActivePanel(PANELS.friends)}
-        selected={activePanel === PANELS.friends}
-        text="Мои друзья"
+        onClick={() => setActivePanel({ name: PANELS.friends, id: 0 })}
+        selected={activePanel.name === PANELS.friends}
+        text='Мои друзья'
       >
         <Icon28UsersOutline />
       </TabbarItem>
       <TabbarItem
-        onClick={() => setActivePanel(PANELS.home)}
-        selected={activePanel === PANELS.home}
-        text="Мой профиль"
+        onClick={() => setActivePanel({ name: PANELS.home, id: 0 })}
+        selected={activePanel.name === PANELS.home}
+        text='Мой профиль'
       >
         <Icon28Profile />
       </TabbarItem>
       <TabbarItem
-        onClick={() => setActivePanel(PANELS.settings)}
-        selected={activePanel === PANELS.settings}
-        text="Настройки"
+        onClick={() => setActivePanel({ name: PANELS.settings, id: 0 })}
+        selected={activePanel.name === PANELS.settings}
+        text='Настройки'
       >
         <Icon28SettingsOutline />
       </TabbarItem>
@@ -91,25 +91,24 @@ const App = () => {
 
   return (
     <AppContext.Provider value={AppContextValue}>
-      <Epic activeStory={activePanel} tabbar={tabbar}>
+      <Epic activeStory={activePanel.name} tabbar={tabbar}>
         <View id={PANELS.profile} activePanel={PANELS.profile} popout={activePopout}>
-          <Profile id={PANELS.profile} title="Мой профиль" user={user} />
+          <Profile id={PANELS.profile} title='Мой профиль' userId={activePanel.id} user={user} />
         </View>
         <View id={PANELS.settings} activePanel={PANELS.settings} popout={activePopout}>
-          <Settings id={PANELS.settings} title="Настройки" />
+          <Settings id={PANELS.settings} title='Настройки' />
         </View>
         <View id={PANELS.friends} activePanel={PANELS.friends} popout={activePopout}>
-          <Friends id={PANELS.friends} title="Мои друзья" />
+          <Friends id={PANELS.friends} title='Мои друзья' />
         </View>
         <View id={PANELS.home} activePanel={PANELS.home} popout={activePopout}>
-          <Home id={PANELS.home} title="Геймер" user={user} />
+          <Home id={PANELS.home} title='Геймер' user={user} />
         </View>
-
         <View id={PANELS.steam} activePanel={PANELS.steam} popout={activePopout}>
-          <Steam id={PANELS.steam} title="Мой Steam" />
+          <Steam id={PANELS.steam} title='Мой Steam' />
         </View>
         <View id={PANELS.buttleNet} activePanel={PANELS.buttleNet} popout={activePopout}>
-          <BattleNet id={PANELS.buttleNet} title="Мой Battle.net" />
+          <BattleNet id={PANELS.buttleNet} title='Мой Battle.net' />
         </View>
       </Epic>
     </AppContext.Provider>
