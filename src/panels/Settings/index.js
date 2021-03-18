@@ -46,7 +46,7 @@ const Settings = ({ id, title, user }) => {
       />,
     )
 
-    window.open(user.steam_link)
+    window.open(user.steam_attach_link)
     // 1. открываем модалку с кнопкой продолжить
     // 2. открываем окно со стимом регистрируемся и окно закрывается
     // 3. нажимаем на продолжить
