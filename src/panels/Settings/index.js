@@ -61,7 +61,7 @@ const Settings = ({ id, title, user }) => {
     const updatedUser = await getUser()
 
     if (updatedUser) {
-      if (user.steam_id) setActivePopout(null)
+      if (updatedUser.steam_id) setActivePopout(null)
       else
         setActivePopout(
           <Alert
