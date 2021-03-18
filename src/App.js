@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import bridge from '@vkontakte/vk-bridge'
-import { Epic, Tabbar, TabbarItem, View } from '@vkontakte/vkui'
+import { Epic, Tabbar, TabbarItem, View, ScreenSpinner } from '@vkontakte/vkui'
 import '@vkontakte/vkui/dist/vkui.css'
 
 import Icon28UsersOutline from '@vkontakte/icons/dist/28/users_outline'
@@ -13,7 +13,7 @@ import Friends from './panels/Friends'
 import Settings from './panels/Settings'
 import Profile from './panels/Profile'
 
-// import { signIn } from './api'
+import { signIn } from './api'
 
 const App = () => {
   const [activePanel, setActivePanel] = useState(PANELS.settings)
@@ -31,10 +31,16 @@ const App = () => {
     })
 
     async function fetchData() {
+      setActivePopout(<ScreenSpinner size="large" />)
+
       try {
         const user = await bridge.send('VKWebAppGetUserInfo')
 
-        setUser(user)
+        signIn({ ...user, avatar: user.photo_200 }).then(usr => {
+          console.log('user', usr)
+          setUser(usr)
+          setActivePopout(null)
+        })
       } catch (error) {
         console.error('error', error.message)
       }
@@ -46,6 +52,8 @@ const App = () => {
   const AppContextValue = {
     activePanel,
     setActivePanel,
+    activePopout,
+    setActivePopout,
   }
 
   const tabbar = (

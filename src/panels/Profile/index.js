@@ -9,10 +9,7 @@ const Profile = ({ id, user, title }) => {
       <PanelHeader>{title}</PanelHeader>
       {user && (
         <Group>
-          <Cell
-            before={user.photo_200 ? <Avatar src={user.photo_200} size={72} /> : null}
-            description={user.city && user.city.title ? user.city.title : ''}
-          >
+          <Cell before={user.avatar ? <Avatar src={user.avatar} size={72} /> : null}>
             {`${user.first_name} ${user.last_name}`}
           </Cell>
         </Group>

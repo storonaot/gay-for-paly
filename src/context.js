@@ -5,4 +5,6 @@ import { noop } from './utils'
 export const AppContext = React.createContext({
   activePanel: null,
   setActivePanel: noop,
+  activePopout: null,
+  setActivePopout: noop,
 })
