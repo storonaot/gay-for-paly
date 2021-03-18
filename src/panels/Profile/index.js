@@ -35,19 +35,20 @@ const osname = platform()
 const FavoriteGames = ({ games, showAction }) => {
   return (
     <Group>
-      <Header mode='primary'>Любимые игры</Header>
-      {games && games.map(game => {
-        return (
-          <SimpleCell
-            key={game.game_id}
-            before={<Avatar mode='app' size={32} src={game.logo1} />}
-            description={`${Math.round(game.play_time_minutes / 60)} часов`}
-            after={showAction && <Icon24UnfavoriteOutline />}
-          >
-            {game.title}
-          </SimpleCell>
-        )
-      })}
+      <Header mode="primary">Любимые игры</Header>
+      {games &&
+        games.map(game => {
+          return (
+            <SimpleCell
+              key={game.game_id}
+              before={<Avatar mode="app" size={32} src={game.logo1} />}
+              description={`${Math.round(game.play_time_minutes / 60)} часов`}
+              after={showAction && <Icon24UnfavoriteOutline />}
+            >
+              {game.title}
+            </SimpleCell>
+          )
+        })}
     </Group>
   )
 }
@@ -64,12 +65,12 @@ const Accounts = ({ user }) => {
   }
   return (
     <Group>
-      <Header mode='primary'>Аккаунты</Header>
+      <Header mode="primary">Аккаунты</Header>
       {accounts.map(account => {
         return (
           <SimpleCell
             key={account.id}
-            before={<Avatar mode='app' size={32} src={account.avatar} />}
+            before={<Avatar mode="app" size={32} src={account.avatar} />}
             description={
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Icon12User /> {account.nickname}
@@ -88,15 +89,15 @@ export const StatusForm = () => {
   return (
     <FormLayout>
       <FormItem>
-        <Title level='2' style={{ textAlign: 'center' }} weight='medium'>
+        <Title level="2" style={{ textAlign: 'center' }} weight="medium">
           Статус
         </Title>
       </FormItem>
       <FormItem>
-        <Input type='text' />
+        <Input type="text" />
       </FormItem>
       <FormItem>
-        <Button size='l' stretched>
+        <Button size="l" stretched>
           Сохранить
         </Button>
       </FormItem>
@@ -110,12 +111,20 @@ export const StoryPopup = ({ total }) => {
     if (osname === IOS) {
       space = ' '
     }
-    let text = 'Я играл в игры ' + total + ' часов' + space +
+    let text =
+      'Я играл в игры ' +
+      total +
+      ' часов' +
+      space +
       '\n' +
-      'А мог бы заработать ' + (total * 250) + space +
-      'курьером, но выбрал' + space +
+      'А мог бы заработать ' +
+      total * 250 +
+      space +
+      'курьером, но выбрал' +
+      space +
       'киберспорт😉'
-    let imageUrl = 'https://pp.userapi.com/ESlojY-aShK5orIRfa64W7vtw1KDXbdH7ZdgbA/dSJCXRedGT8.jpg?ecomm=1'
+    let imageUrl =
+      'https://pp.userapi.com/ESlojY-aShK5orIRfa64W7vtw1KDXbdH7ZdgbA/dSJCXRedGT8.jpg?ecomm=1'
     bridge.send('VKWebAppShowStoryBox', {
       background_type: 'image',
       url: 'https://pp.userapi.com/gw4YJQavFh93ELabRAprREv1xSOj-e37eizkUg/0Q7vior7ZQQ.jpg?ecomm=1',
@@ -158,21 +167,21 @@ export const StoryPopup = ({ total }) => {
   }
   return (
     <Div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <Icon56DiamondOutline fill='var(--accent)' />
+      <Icon56DiamondOutline fill="var(--accent)" />
       <Spacing size={17} />
-      <Title level='2' style={{ textAlign: 'center' }} weight='medium'>
+      <Title level="2" style={{ textAlign: 'center' }} weight="medium">
         {total} часов
       </Title>
       <Spacing size={8} />
-      <Subhead style={{ color: 'var(--text_subhead)' }} weight='regular'>
+      <Subhead style={{ color: 'var(--text_subhead)' }} weight="regular">
         проведено в играх Steam и Battle.net
       </Subhead>
       <Spacing size={20} />
-      <Caption style={{ color: 'var(--text_placeholder)' }} level='1' weight='regular'>
+      <Caption style={{ color: 'var(--text_placeholder)' }} level="1" weight="regular">
         Это больше, чем у 99% пользователей
       </Caption>
       <Spacing size={32} />
-      <Button onClick={requestStory} before={<Icon20StoryOutline />} size='l' stretched>
+      <Button onClick={requestStory} before={<Icon20StoryOutline />} size="l" stretched>
         Поделиться в истории
       </Button>
     </Div>
@@ -210,9 +219,10 @@ const Profile = ({ id, user, title, userId }) => {
                 setTotal(Math.round(totalMinutes / 60))
               }
             }
-          }).catch(error => {
-          console.error(error)
-        })
+          })
+          .catch(error => {
+            console.error(error)
+          })
       }
       fetchData()
     }
@@ -232,7 +242,7 @@ const Profile = ({ id, user, title, userId }) => {
             after={
               isMyProfile && (
                 <Icon28StoryOutline
-                  fill='var(--button_primary_background)'
+                  fill="var(--button_primary_background)"
                   onClick={() => {
                     setActiveModal({ key: MODALS.storyPopup, total: total })
                   }}

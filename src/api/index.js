@@ -33,21 +33,19 @@ export const getUser = () =>
     method: 'GET',
   }).then(toJSON)
 
-
-export const getFriends = async (userIds) => {
+export const getFriends = async userIds => {
   try {
     if (!userIds || !userIds.length) {
       const { access_token } = await bridge.send('VKWebAppGetAuthToken', {
-        'app_id': 7794940,
-        'scope': 'friends,status',
+        app_id: 7794940,
+        scope: 'friends,status',
       })
       const { response } = await bridge.send('VKWebAppCallAPIMethod', {
-        'method': 'friends.getAppUsers',
-        'params': { 'v': '5.130', 'access_token': access_token },
+        method: 'friends.getAppUsers',
+        params: { v: '5.130', access_token: access_token },
       })
       userIds = response
     }
-
 
     return fetch(`${URL}/friends?user_ids=${userIds.join(',')}`, {
       ...defaultOptions,
@@ -57,3 +55,10 @@ export const getFriends = async (userIds) => {
     console.error(error)
   }
 }
+
+export const updatePrivateStatus = privateStatus =>
+  fetch(`${URL}/private-status`, {
+    ...defaultOptions,
+    method: 'POST',
+    body: JSON.stringify({ private_status: privateStatus }),
+  }).then(toJSON)

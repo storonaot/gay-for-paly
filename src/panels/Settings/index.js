@@ -9,7 +9,7 @@ import SteamIcon from '../../assets/steam.jpg'
 import BattlenetIcon from '../../assets/battlenet.jpg'
 
 import s from './styles.module.css'
-import { getUser } from '../../api'
+import { getUser, updatePrivateStatus } from '../../api'
 import { AppContext } from '../../context'
 import { MODALS } from '../../constants'
 
@@ -26,7 +26,9 @@ const Settings = ({ id, title, user }) => {
     // { id: 3, label: 'VK Game', iconSrc: BattlenetIcon, connected: false },
   ]
 
-  const [activeMenuItem, setActiveMenuItem] = useState(menu[0])
+  const [activeMenuItem, setActiveMenuItem] = useState(
+    menu.find(item => item.id === Number(user.private_status)),
+  )
 
   const { setActivePopout, setUser } = useContext(AppContext)
 
@@ -96,7 +98,10 @@ const Settings = ({ id, title, user }) => {
           selectable
           checked={activeMenuItem.id === item.id}
           onClick={() => {
-            setActiveMenuItem(item)
+            const id = Number(item.id)
+
+            setActiveMenuItem(menu.find(item => item.id === id))
+            updatePrivateStatus(item.id)
           }}
         >
           {item.label}
