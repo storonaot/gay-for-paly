@@ -25,10 +25,9 @@ import Div from '@vkontakte/vkui/dist/components/Div/Div'
 import PanelHeader from '../../common/PanelHeader'
 import { MODALS, PANELS } from '../../constants'
 import bridge from '@vkontakte/vk-bridge'
-import { getFriends } from '../../api'
+import { getFriends, setStatus } from '../../api'
 
 import SteamIcon from '../../assets/steam.jpg'
-import BattlenetIcon from '../../assets/battlenet.jpg'
 
 const osname = platform()
 
@@ -86,6 +85,22 @@ const Accounts = ({ user }) => {
 }
 
 export const StatusForm = () => {
+  const { setActiveModal, user, setUser } = useContext(AppContext)
+  const [statusBuf, setStatusBuf] = useState('')
+
+
+  const onChange = (e) => {
+    const { value } = e.currentTarget
+    setStatusBuf(value)
+  }
+
+  const onSave = () => {
+    setStatus(statusBuf).then(() => {
+      setUser({ ...user, status: statusBuf })
+    }).finally(() => {
+      setActiveModal(null)
+    })
+  }
   return (
     <FormLayout>
       <FormItem>
@@ -94,10 +109,12 @@ export const StatusForm = () => {
         </Title>
       </FormItem>
       <FormItem>
-        <Input type="text" />
+        <Input type='text'
+               value={statusBuf}
+               onChange={onChange} />
       </FormItem>
       <FormItem>
-        <Button size="l" stretched>
+        <Button size='l' stretched onClick={onSave}>
           Сохранить
         </Button>
       </FormItem>
@@ -188,9 +205,9 @@ export const StoryPopup = ({ total }) => {
   )
 }
 
-const Profile = ({ id, user, title, userId }) => {
+const Profile = ({ id, title, user, userId }) => {
+  const { setActiveModal, activePanel, setUser } = useContext(AppContext)
   const isMyProfile = user ? user.vk_user_id === userId : false
-  const { setActiveModal, activePanel } = useContext(AppContext)
   const [userInfo, setUserInfo] = useState({})
   const [favoriteGames, setFavoriteGames] = useState([])
   const [total, setTotal] = useState(0)
@@ -226,7 +243,7 @@ const Profile = ({ id, user, title, userId }) => {
       }
       fetchData()
     }
-  }, [])
+  }, [user])
 
   const userName = userInfo ? `${userInfo.first_name} ${userInfo.last_name}` : 'Профиль'
 

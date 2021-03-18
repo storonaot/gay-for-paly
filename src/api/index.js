@@ -33,7 +33,14 @@ export const getUser = () =>
     method: 'GET',
   }).then(toJSON)
 
-export const getFriends = async userIds => {
+export const setStatus = (status) =>
+  fetch(`${URL}/status`, {
+    ...defaultOptions,
+    method: 'POST',
+    body: JSON.stringify({ status }),
+  }).then(toJSON)
+
+export const getFriends = async (userIds) => {
   try {
     if (!userIds || !userIds.length) {
       const { access_token } = await bridge.send('VKWebAppGetAuthToken', {
