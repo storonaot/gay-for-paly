@@ -18,7 +18,7 @@ const Modal = ({ activeModal }) => {
         setActiveModal(null)
       }}
     >
-      <ModalPage id="noop" />
+      <ModalPage id='noop' />
       <ModalCard id={MODALS.gameItem}>
         <GamePopup />
       </ModalCard>
@@ -26,7 +26,7 @@ const Modal = ({ activeModal }) => {
         <StatusForm />
       </ModalCard>
       <ModalCard id={MODALS.storyPopup}>
-        <StoryPopup />
+        <StoryPopup total={activeModal ? activeModal.total : 0} />
       </ModalCard>
     </ModalRoot>
   )
