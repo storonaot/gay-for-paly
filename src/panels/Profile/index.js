@@ -17,7 +17,7 @@ import {
 } from '@vkontakte/vkui'
 import { AppContext } from '../../context'
 
-import { initStory } from '../../utils'
+import { platform, IOS } from '@vkontakte/vkui'
 import Icon24UnfavoriteOutline from '@vkontakte/icons/dist/24/unfavorite_outline'
 import Icon56DiamondOutline from '@vkontakte/icons/dist/56/diamond_outline'
 import { Icon12User, Icon28StoryOutline, Icon20StoryOutline } from '@vkontakte/icons'
@@ -25,6 +25,7 @@ import Div from '@vkontakte/vkui/dist/components/Div/Div'
 import PanelHeader from '../../common/PanelHeader'
 import { MODALS, PANELS } from '../../constants'
 import bridge from '@vkontakte/vk-bridge'
+const osname = platform();
 
 const FavouriteGames = ({ showAction }) => {
   let favoriteGames = [
@@ -129,14 +130,7 @@ export const StatusForm = () => {
 export const StoryPopup = () => {
   const requestStory = () => {
     let space = '\n'
-    if ([
-      'iPad Simulator',
-      'iPhone Simulator',
-      'iPod Simulator',
-      'iPad',
-      'iPhone',
-      'iPod',
-    ].includes(navigator.platform)) {
+    if (osname === IOS) {
       space = ' '
     }
     let text = 'Я играл в игры 32312 часов' + space +
