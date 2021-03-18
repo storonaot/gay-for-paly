@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   Panel,
   Group,
@@ -9,16 +9,19 @@ import {
   HorizontalScroll,
   HorizontalCell,
   RichCell,
-  Cell,
   UsersStack,
 } from '@vkontakte/vkui'
+
+import { PANELS } from '../../constants'
 
 import SteamIcon from '../../assets/steam.jpg'
 import BattlenetIcon from '../../assets/battlenet.jpg'
 
 import PanelHeader from '../../common/PanelHeader'
+import { AppContext } from '../../context'
 
 const Home = ({ id, user, title }) => {
+  const { setActivePanel } = useContext(AppContext)
   const steamGamesTotal = 16
   const battlenetGamesTotal = 16
 
@@ -54,6 +57,9 @@ const Home = ({ id, user, title }) => {
       {user && (
         <Group>
           <RichCell
+            onClick={() => {
+              setActivePanel(PANELS.profile)
+            }}
             multiline
             caption="В игре 5 173 часа"
             bottom={<UsersStack photos={[SteamIcon, BattlenetIcon]} />}
@@ -66,7 +72,15 @@ const Home = ({ id, user, title }) => {
       <Group
         header={
           <Header
-            aside={<Link>Показать все</Link>}
+            aside={
+              <Link
+                onClick={() => {
+                  setActivePanel(PANELS.steam)
+                }}
+              >
+                Показать все
+              </Link>
+            }
             indicator={
               <Counter size="s" mode="secondary">
                 {steamGamesTotal}
@@ -86,7 +100,15 @@ const Home = ({ id, user, title }) => {
       <Group
         header={
           <Header
-            aside={<Link>Показать все</Link>}
+            aside={
+              <Link
+                onClick={() => {
+                  setActivePanel(PANELS.buttleNet)
+                }}
+              >
+                Показать все
+              </Link>
+            }
             indicator={
               <Counter size="s" mode="secondary">
                 {battlenetGamesTotal}
