@@ -75,14 +75,14 @@ export const addToFaivorite = (gameId, platform) =>
     ...defaultOptions,
     method: 'POST',
     body: JSON.stringify({ game_id: gameId, platform }),
-  }).then(toJSON)
+  })
 
 export const removeFromFaivorite = (gameId, platform) =>
   fetch(`${URL}/remove-from-favorite`, {
     ...defaultOptions,
     method: 'POST',
     body: JSON.stringify({ game_id: gameId, platform }),
-  }).then(toJSON)
+  })
 
 export const detachSteam = () =>
   fetch(`${URL}/detach/steam`, {
