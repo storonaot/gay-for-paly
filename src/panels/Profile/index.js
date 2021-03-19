@@ -13,7 +13,7 @@ import {
   RichCell,
   Title,
   Caption,
-  Subhead,
+  Subhead, ScreenSpinner,
 } from '@vkontakte/vkui'
 import { AppContext } from '../../context'
 
@@ -48,7 +48,7 @@ const FavoriteGames = ({ games, showAction }) => {
         return (
           <SimpleCell
             key={game.game_id}
-            before={<Avatar mode='app' size={32} src={game.logo2} />}
+            before={<Avatar mode='app' size={32} src={game.logo1 || game.logo2} />}
             description={`${Math.floor(game.play_time_minutes / 60)} часов`}
             after={showAction && <Icon28Favorite onClick={() => {
               unmark(game.game_id, game.platform)
@@ -64,7 +64,7 @@ const FavoriteGames = ({ games, showAction }) => {
 
 const Accounts = ({ user }) => {
   let accounts = []
-  if (user.steam_id) {
+  if (user && user.steam_id) {
     accounts.push({
       id: 1,
       nickname: user.steam_username,
@@ -160,9 +160,9 @@ export const StoryPopup = ({ total }) => {
 }
 
 const Profile = ({ id, title, user, userId }) => {
-  const { setActiveModal, activePanel } = useContext(AppContext)
+  const { setActiveModal, activePanel, setActivePopout } = useContext(AppContext)
   const isMyProfile = user ? user.vk_user_id === userId : false
-  const [userInfo, setUserInfo] = useState({})
+  const [userInfo, setUserInfo] = useState(null)
   const [favoriteGames, setFavoriteGames] = useState([])
   const [total, setTotal] = useState(0)
 
@@ -171,9 +171,10 @@ const Profile = ({ id, title, user, userId }) => {
       setUserInfo(user)
     } else {
       const fetchData = async () => {
+        setActivePopout(<ScreenSpinner size='large' />)
         getFriends([userId])
           .then(resp => {
-            for (let i = 0; i < resp.length && !userInfo.vk_user_id; i++) {
+            for (let i = 0; i < resp.length && !userInfo; i++) {
               if (resp[i].vk_user_id === userId) {
                 setUserInfo(resp[i])
               }
@@ -182,10 +183,13 @@ const Profile = ({ id, title, user, userId }) => {
           .catch(error => {
             console.error(error)
           })
+          .finally(() => {
+            setActivePopout(null)
+          })
       }
       fetchData()
     }
-    if (userInfo.games) {
+    if (userInfo && userInfo.games) {
       let favoriteGamesBuf = []
       let totalMinutes = 0
       userInfo.games.forEach(game => {
@@ -208,45 +212,47 @@ const Profile = ({ id, title, user, userId }) => {
         title={isMyProfile ? title : userName}
       />
       {userInfo && (
-        <Group>
-          <RichCell
-            after={
-              isMyProfile && (
-                <Icon28StoryOutline
-                  fill='var(--button_primary_background)'
-                  onClick={() => {
-                    setActiveModal({ key: MODALS.storyPopup, props: { total: total } })
-                  }}
-                />
-              )
-            }
-            before={userInfo.avatar ? <Avatar src={userInfo.avatar} size={72} /> : null}
-            caption={
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <Spacing size={4} />
-                {isMyProfile ? (
-                  <span
-                    style={{ color: '#4986CC' }}
+        <>
+          <Group>
+            <RichCell
+              after={
+                isMyProfile && (
+                  <Icon28StoryOutline
+                    fill='var(--button_primary_background)'
                     onClick={() => {
-                      setActiveModal({ key: MODALS.statusForm })
+                      setActiveModal({ key: MODALS.storyPopup, props: { total: total } })
                     }}
-                  >
+                  />
+                )
+              }
+              before={userInfo.avatar ? <Avatar src={userInfo.avatar} size={72} /> : null}
+              caption={
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <Spacing size={4} />
+                  {isMyProfile ? (
+                    <span
+                      style={{ color: '#4986CC' }}
+                      onClick={() => {
+                        setActiveModal({ key: MODALS.statusForm })
+                      }}
+                    >
                     {userInfo.status ? userInfo.status : 'Установить статус'}
                   </span>
-                ) : (
-                  userInfo.status
-                )}
-                <Spacing size={4} />
-                <span>Всего в игре: {total} часов</span>
-              </div>
-            }
-          >
-            {userName}
-          </RichCell>
-        </Group>
+                  ) : (
+                    userInfo.status
+                  )}
+                  <Spacing size={4} />
+                  <span>Всего в игре: {total} часов</span>
+                </div>
+              }
+            >
+              {userName}
+            </RichCell>
+          </Group>
+          <Accounts user={userInfo} />
+          <FavoriteGames showAction={isMyProfile} games={favoriteGames} />
+        </>
       )}
-      <Accounts user={userInfo} />
-      <FavoriteGames showAction={isMyProfile} games={favoriteGames} />
     </Panel>
   )
 }

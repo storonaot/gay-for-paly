@@ -8,7 +8,7 @@ import { AppContext } from '../../context'
 import { getFriends } from '../../api'
 
 const Friends = ({ id, title }) => {
-  const { setActivePanel, setActivePopout, activePopout } = useContext(AppContext)
+  const { setActivePanel, setActivePopout } = useContext(AppContext)
   const [friends, setFriends] = useState(null)
   useEffect(() => {
     const fetchData = async () => {
