@@ -70,7 +70,7 @@ export const GamePopup = () => {
       <div style={{ marginBottom: 32, color: '#6D7885', fontSize: '14px' }}>
         Сколько бессоных ночей
       </div>
-      <Button
+      { totalHours > 0 && <Button
         onClick={requestStory}
         before={<Icon24StoryOutline />}
         size="l"
@@ -79,6 +79,7 @@ export const GamePopup = () => {
       >
         Поделиться в истории
       </Button>
+      }
       <Button
         mode="secondary"
         size="l"
