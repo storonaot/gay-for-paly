@@ -81,7 +81,7 @@ const App = () => {
       <TabbarItem
         onClick={() => setActivePanel({ name: PANELS.home, id: 0 })}
         selected={activePanel.name === PANELS.home}
-        text="Мой профиль"
+        text="Главная"
       >
         <Icon28Profile />
       </TabbarItem>
