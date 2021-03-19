@@ -18,15 +18,15 @@ const Modal = ({ activeModal }) => {
         setActiveModal(null)
       }}
     >
-      <ModalPage id="noop" />
+      <ModalPage id='noop' />
       <ModalCard id={MODALS.gameItem}>
-        <GamePopup />
+        <GamePopup {...(activeModal ? activeModal.props : {})} />
       </ModalCard>
       <ModalCard id={MODALS.statusForm}>
         <StatusForm />
       </ModalCard>
       <ModalCard id={MODALS.storyPopup}>
-        <StoryPopup total={activeModal ? activeModal.total : 0} />
+        <StoryPopup {...(activeModal ? activeModal.props : {})} />
       </ModalCard>
     </ModalRoot>
   )
