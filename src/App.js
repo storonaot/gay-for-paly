@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import bridge from '@vkontakte/vk-bridge'
-import { Epic, Tabbar, TabbarItem, View, ScreenSpinner } from '@vkontakte/vkui'
+import { Epic, Tabbar, TabbarItem, View, ScreenSpinner, AdaptivityProvider } from '@vkontakte/vkui'
 import '@vkontakte/vkui/dist/vkui.css'
 
 import Icon28UsersOutline from '@vkontakte/icons/dist/28/users_outline'
@@ -98,59 +98,61 @@ const App = () => {
   return !user ? (
     <ScreenSpinner size="large" />
   ) : (
-    <AppContext.Provider value={AppContextValue}>
-      <Epic activeStory={activePanel.name} tabbar={tabbar}>
-        <View
-          id={PANELS.profile}
-          activePanel={PANELS.profile}
-          popout={activePopout}
-          modal={<Modal activeModal={activeModal} />}
-        >
-          <Profile id={PANELS.profile} title="Мой профиль" userId={activePanel.id} user={user} />
-        </View>
-        <View
-          id={PANELS.settings}
-          activePanel={PANELS.settings}
-          popout={activePopout}
-          modal={<Modal activeModal={activeModal} />}
-          user={user}
-        >
-          <Settings id={PANELS.settings} title="Настройки" user={user} />
-        </View>
-        <View
-          id={PANELS.friends}
-          activePanel={PANELS.friends}
-          popout={activePopout}
-          modal={<Modal activeModal={activeModal} />}
-        >
-          <Friends id={PANELS.friends} title="Мои друзья" />
-        </View>
-        <View
-          id={PANELS.home}
-          activePanel={PANELS.home}
-          popout={activePopout}
-          modal={<Modal activeModal={activeModal} />}
-        >
-          <Home id={PANELS.home} title="Геймер" user={user} />
-        </View>
-        <View
-          id={PANELS.steam}
-          activePanel={PANELS.steam}
-          popout={activePopout}
-          modal={<Modal activeModal={activeModal} />}
-        >
-          <Steam id={PANELS.steam} title="Мой Steam" user={user} />
-        </View>
-        <View
-          id={PANELS.wargaming}
-          activePanel={PANELS.wargaming}
-          popout={activePopout}
-          modal={<Modal activeModal={activeModal} />}
-        >
-          <Wargaming id={PANELS.wargaming} title="Мой Wargaming" user={user} />
-        </View>
-      </Epic>
-    </AppContext.Provider>
+    <AdaptivityProvider>
+      <AppContext.Provider value={AppContextValue}>
+        <Epic activeStory={activePanel.name} tabbar={tabbar}>
+          <View
+            id={PANELS.profile}
+            activePanel={PANELS.profile}
+            popout={activePopout}
+            modal={<Modal activeModal={activeModal} />}
+          >
+            <Profile id={PANELS.profile} title="Мой профиль" userId={activePanel.id} user={user} />
+          </View>
+          <View
+            id={PANELS.settings}
+            activePanel={PANELS.settings}
+            popout={activePopout}
+            modal={<Modal activeModal={activeModal} />}
+            user={user}
+          >
+            <Settings id={PANELS.settings} title="Настройки" user={user} />
+          </View>
+          <View
+            id={PANELS.friends}
+            activePanel={PANELS.friends}
+            popout={activePopout}
+            modal={<Modal activeModal={activeModal} />}
+          >
+            <Friends id={PANELS.friends} title="Мои друзья" />
+          </View>
+          <View
+            id={PANELS.home}
+            activePanel={PANELS.home}
+            popout={activePopout}
+            modal={<Modal activeModal={activeModal} />}
+          >
+            <Home id={PANELS.home} title="Геймер" user={user} />
+          </View>
+          <View
+            id={PANELS.steam}
+            activePanel={PANELS.steam}
+            popout={activePopout}
+            modal={<Modal activeModal={activeModal} />}
+          >
+            <Steam id={PANELS.steam} title="Мой Steam" user={user} />
+          </View>
+          <View
+            id={PANELS.wargaming}
+            activePanel={PANELS.wargaming}
+            popout={activePopout}
+            modal={<Modal activeModal={activeModal} />}
+          >
+            <Wargaming id={PANELS.wargaming} title="Мой Wargaming" user={user} />
+          </View>
+        </Epic>
+      </AppContext.Provider>
+    </AdaptivityProvider>
   )
 }
 
