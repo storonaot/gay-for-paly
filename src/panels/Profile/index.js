@@ -45,7 +45,7 @@ const FavoriteGames = ({ games, showAction }) => {
   return (
     <Group>
       <Header mode="primary">Любимые игры</Header>
-      {games &&
+      {games && games.length ? (
         games.map(game => {
           return (
             <SimpleCell
@@ -65,12 +65,25 @@ const FavoriteGames = ({ games, showAction }) => {
               {game.title}
             </SimpleCell>
           )
-        })}
+        })
+      ) : (
+        <Placeholder>Eщё не получена информация об играх</Placeholder>
+      )}
     </Group>
   )
 }
 
-const Accounts = ({ accounts }) => {
+const Accounts = ({ user }) => {
+  let accounts = []
+  if (user && user.steam_id) {
+    accounts.push({
+      id: 1,
+      nickname: user.steam_username,
+      avatar: SteamIcon,
+      title: 'Steam',
+    })
+  }
+
   return (
     <Group>
       <Header mode="primary">Аккаунты</Header>
@@ -209,16 +222,6 @@ const Profile = ({ id, title, user, userId }) => {
 
   const userName = userInfo ? `${userInfo.first_name} ${userInfo.last_name}` : 'Профиль'
 
-  let accounts = []
-  if (user && user.steam_id) {
-    accounts.push({
-      id: 1,
-      nickname: user.steam_username,
-      avatar: SteamIcon,
-      title: 'Steam',
-    })
-  }
-
   return (
     <Panel id={id}>
       <PanelHeader
@@ -263,10 +266,8 @@ const Profile = ({ id, title, user, userId }) => {
               {userName}
             </RichCell>
           </Group>
-          <Accounts accounts={accounts} />
-          {accounts.length ? (
-            <FavoriteGames showAction={isMyProfile} games={favoriteGames} />
-          ) : null}
+          <Accounts user={user} />
+          <FavoriteGames showAction={isMyProfile} games={favoriteGames} />
         </>
       )}
     </Panel>
