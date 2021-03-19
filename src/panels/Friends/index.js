@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Avatar, Group, Header, Panel, SimpleCell } from '@vkontakte/vkui'
+import { Avatar, Group, Header, Panel, Placeholder, ScreenSpinner, SimpleCell } from '@vkontakte/vkui'
 
 import { PANELS } from '../../constants'
 
@@ -8,15 +8,18 @@ import { AppContext } from '../../context'
 import { getFriends } from '../../api'
 
 const Friends = ({ id, title }) => {
-  const { setActivePanel } = useContext(AppContext)
+  const { setActivePanel, setActivePopout, activePopout } = useContext(AppContext)
   const [friends, setFriends] = useState(null)
   useEffect(() => {
     const fetchData = async () => {
+      setActivePopout(<ScreenSpinner size='large' />)
       getFriends()
         .then(resp => {
-          setFriends(resp)
+          setFriends(resp || [])
         }).catch(error => {
         console.error(error)
+      }).finally(() => {
+        setActivePopout(null)
       })
     }
     fetchData()
@@ -25,9 +28,10 @@ const Friends = ({ id, title }) => {
   return (
     <Panel id={id}>
       <PanelHeader title={title} goBack={PANELS.home} />
+      {friends &&
       <Group>
         <Header>Друзья</Header>
-        {friends && friends.map(friend => {
+        {friends.map(friend => {
           let accounts = []
           if (friend.steam_id) {
             accounts.push('Steam')
@@ -45,7 +49,9 @@ const Friends = ({ id, title }) => {
             </SimpleCell>
           )
         })}
+        {!friends.length ? <Placeholder>Пока нет друзей</Placeholder> : null}
       </Group>
+      }
     </Panel>
   )
 }
