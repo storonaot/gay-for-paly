@@ -26,7 +26,7 @@ const Settings = ({ id, title, user }) => {
   ]
 
   const [activeMenuItem, setActiveMenuItem] = useState(
-    user.private_status === 1
+    Number(user.private_status) === 1
       ? menu.find(item => item.id === 2)
       : menu.find(item => item.id === Number(user.private_status)),
   )
