@@ -13,7 +13,7 @@ import { getUser, updatePrivateStatus, detachSteam } from '../../api'
 import { AppContext } from '../../context'
 
 const menu = [
-  { id: 1, label: 'Все' },
+  // { id: 1, label: 'Все' },
   { id: 2, label: 'Друзья' },
   { id: 3, label: 'Никто' },
 ]
