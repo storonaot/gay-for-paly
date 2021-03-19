@@ -39,7 +39,7 @@ const FavoriteGames = ({ games, showAction }) => {
             <SimpleCell
               key={game.game_id}
               before={<Avatar mode="app" size={32} src={game.logo1} />}
-              description={`${Math.round(game.play_time_minutes / 60)} часов`}
+              description={`${Math.floor(game.play_time_minutes / 60)} часов`}
               after={showAction && <Icon24UnfavoriteOutline />}
             >
               {game.title}
@@ -182,7 +182,7 @@ const Profile = ({ id, title, user, userId }) => {
         totalMinutes += game.play_time_minutes
       })
       setFavoriteGames(favoriteGamesBuf)
-      setTotal(Math.round(totalMinutes / 60))
+      setTotal(Math.floor(totalMinutes / 60))
     }
   }, [user, userInfo])
 
