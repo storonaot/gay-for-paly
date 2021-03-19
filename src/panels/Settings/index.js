@@ -9,7 +9,7 @@ import SteamIcon from '../../assets/steam.jpg'
 import BattlenetIcon from '../../assets/battlenet.jpg'
 
 import s from './styles.module.css'
-import { getUser, updatePrivateStatus } from '../../api'
+import { getUser, updatePrivateStatus, detachSteam } from '../../api'
 import { AppContext } from '../../context'
 
 const menu = [
@@ -83,7 +83,7 @@ const Settings = ({ id, title, user }) => {
           />,
         )
 
-      setUser(user)
+      setUser(updatedUser)
     }
   }
 
@@ -116,12 +116,26 @@ const Settings = ({ id, title, user }) => {
     )
   }
 
+  const detach = async platform => {
+    if (platform.label === 'Steam') {
+      const updUser = detachSteam()
+
+      setUser(updUser)
+    }
+  }
+
   const getIndicatorComponent = platform => {
     if (platform.connected) {
       return (
         <Dropdown
           content={
-            <ActionSheetItem autoclose mode="destructive">
+            <ActionSheetItem
+              autoclose
+              mode="destructive"
+              onClick={() => {
+                detach(platform)
+              }}
+            >
               Удалить
             </ActionSheetItem>
           }
