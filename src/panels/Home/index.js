@@ -28,22 +28,22 @@ const Home = ({ id, user, title }) => {
 
   const { steamGames, battleNetGames } = Array.isArray(user.games)
     ? user.games.reduce(
-        (acc, current) => {
-          if (current.platform === 'steam') {
-            return { steamGames: [...acc.steamGames, current], battleNetGames: acc.battleNetGames }
-          }
+      (acc, current) => {
+        if (current.platform === 'steam') {
+          return { steamGames: [...acc.steamGames, current], battleNetGames: acc.battleNetGames }
+        }
 
-          return { steamGames: acc.steamGames, battleNetGames: [...acc.battleNetGames, current] }
-        },
-        {
-          steamGames: [],
-          battleNetGames: [],
-        },
-      )
-    : {
+        return { steamGames: acc.steamGames, battleNetGames: [...acc.battleNetGames, current] }
+      },
+      {
         steamGames: [],
         battleNetGames: [],
-      }
+      },
+    )
+    : {
+      steamGames: [],
+      battleNetGames: [],
+    }
 
   const steamGamesTotal = steamGames.length
   const battlenetGamesTotal = battleNetGames.length
@@ -54,85 +54,85 @@ const Home = ({ id, user, title }) => {
         return (
           <HorizontalCell
             key={game.game_id}
-            size="m"
+            size='m'
             header={game.title}
-            // onClick={() => {
-            //   setActiveModal({
-            //     key: MODALS.gameItem,
-            //     props: {
-            //       imgSrc: game.logo1,
-            //     },
-            //   })
-            // }}
+            onClick={() => {
+              setActiveModal({
+                key: MODALS.gameItem,
+                props: {
+                  game,
+                },
+              })
+            }}
           >
-            <Avatar size={88} mode="app" src={game.logo1 || game.logo2} />
+            <Avatar size={88} mode='app' src={game.logo1 || game.logo2} />
           </HorizontalCell>
         )
       })}
-    </>
-  )
+        </>
+        )
 
-  return (
-    <Panel id={id}>
-      <PanelHeader title={title} />
+        return (
+        <Panel id={id}>
+        <PanelHeader title={title} />
       {user && (
         <Group>
-          <RichCell
-            after={<Icon28ChevronRightOutline fill="var(--button_primary_background)" />}
-            onClick={() => {
-              setActivePanel({ name: PANELS.profile, id: user.vk_user_id })
-            }}
-            multiline
-            bottom={<UsersStack photos={[SteamIcon, BattlenetIcon]} />}
-            before={user.avatar ? <Avatar src={user.avatar} size={72} /> : null}
-          >
-            {`${user.first_name} ${user.last_name}`}
-          </RichCell>
+        <RichCell
+        after={<Icon28ChevronRightOutline fill='var(--button_primary_background)' />}
+        onClick={() => {
+        setActivePanel({name: PANELS.profile, id: user.vk_user_id})
+      }}
+        multiline
+        bottom={<UsersStack photos={[SteamIcon, BattlenetIcon]} />}
+        before={user.avatar ? <Avatar src={user.avatar} size={72} /> : null}
+        >
+      {`${user.first_name} ${user.last_name}`}
+        </RichCell>
         </Group>
-      )}
-      <Group
-        header={
-          <Header
-            aside={
-              steamGamesTotal ? (
-                <Link
-                  onClick={() => {
-                    setActivePanel({ name: PANELS.steam })
-                  }}
-                >
-                  {'Показать все'}
-                </Link>
-              ) : null
-            }
-            indicator={
-              steamGamesTotal ? (
-                <Counter size="s" mode="secondary">
-                  {steamGamesTotal}
-                </Counter>
-              ) : null
-            }
-          >
-            Мой Steam
-          </Header>
-        }
-      >
-        {steamGamesTotal ? (
-          <HorizontalScroll>
-            <div style={{ display: 'flex' }}>{renderGames(steamGames)}</div>
-          </HorizontalScroll>
-        ) : user.steam_id ? (
-          <Placeholder>Пока не добавлено ни одной игры в Steam</Placeholder>
-        ) : (
-          <Placeholder
-            onClick={() => {
-              setActivePanel({ name: PANELS.settings })
-            }}
-            action={<Button size="m">Подключить Steam</Button>}
-          >
-            Подключите платформу Steam
-          </Placeholder>
         )}
-      </Group>
+        <Group
+        header={
+        <Header
+        aside={
+        steamGamesTotal ? (
+        <Link
+        onClick={() => {
+        setActivePanel({name: PANELS.steam})
+      }}
+        >
+      {'Показать все'}
+        </Link>
+        ) : null
+      }
+        indicator={
+        steamGamesTotal ? (
+        <Counter size='s' mode='secondary'>
+      {steamGamesTotal}
+        </Counter>
+        ) : null
+      }
+        >
+        Мой Steam
+        </Header>
+      }
+        >
+      {steamGamesTotal ? (
+        <HorizontalScroll>
+        <div style={{display: 'flex'}}>{renderGames(steamGames)}</div>
+        </HorizontalScroll>
+        ) : user.steam_id ? (
+        <Placeholder>Пока не добавлено ни одной игры в Steam</Placeholder>
+        ) : (
+        <Placeholder
+        onClick={() => {
+        setActivePanel({name: PANELS.settings})
+      }}
+        action={<Button size='m'>Подключить Steam</Button>}
+        >
+        Подключите платформу Steam
+        </Placeholder>
+        )}
+        </Group>
       {/* <Group
         header={
           <Header
@@ -161,8 +161,8 @@ const Home = ({ id, user, title }) => {
           </div>
         </HorizontalScroll>
       </Group> */}
-    </Panel>
-  )
-}
+        </Panel>
+        )
+      }
 
-export default Home
+        export default Home
