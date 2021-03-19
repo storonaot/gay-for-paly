@@ -150,11 +150,13 @@ const Settings = ({ id, title, user }) => {
           autoclose
           selectable
           checked={activeMenuItem.id === item.id}
-          onClick={() => {
+          onClick={async () => {
             const id = Number(item.id)
 
             setActiveMenuItem(menu.find(item => item.id === id))
-            updatePrivateStatus(item.id)
+            const updUser = await updatePrivateStatus(item.id)
+
+            setUser(updUser)
           }}
         >
           {item.label}

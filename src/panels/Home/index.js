@@ -39,7 +39,7 @@ const Home = ({ id, user, title }) => {
       setLeaders(resLeaders)
     }
     fetchData()
-  })
+  }, [])
 
   const { steamGames, wargamingGames } = Array.isArray(user.games)
     ? user.games.reduce(

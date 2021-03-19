@@ -68,7 +68,14 @@ export const updatePrivateStatus = privateStatus =>
     ...defaultOptions,
     method: 'POST',
     body: JSON.stringify({ private_status: privateStatus }),
-  }).then(toJSON)
+  }).then(response => {
+    if (response.ok) {
+      return fetch(`${URL}/sign-in`, {
+        ...defaultOptions,
+        method: 'GET',
+      }).then(toJSON)
+    }
+  })
 
 export const addToFaivorite = (gameId, platform) =>
   fetch(`${URL}/add-to-favorite`, {
