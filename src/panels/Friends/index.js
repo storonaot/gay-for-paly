@@ -28,29 +28,29 @@ const Friends = ({ id, title }) => {
   return (
     <Panel id={id}>
       <PanelHeader title={title} goBack={PANELS.home} />
-      {friends &&
-      <Group>
-        <Header indicator={friends.length || null}>Друзья</Header>
-        {friends.map(friend => {
-          let accounts = []
-          if (friend.steam_id) {
-            accounts.push('Steam')
-          }
-          return (
-            <SimpleCell
-              key={friend.vk_user_id}
-              onClick={() => {
-                setActivePanel({ name: PANELS.profile, id: friend.vk_user_id, goBack: PANELS.friends })
-              }}
-              description={accounts.join(', ')}
-              before={<Avatar src={friend.avatar} />}
-            >
-              {friend.first_name} {friend.last_name}
-            </SimpleCell>
-          )
-        })}
-        {!friends.length ? <Placeholder>Пока нет друзей</Placeholder> : null}
-      </Group>
+      {friends && (
+        <Group>
+          <Header indicator={friends.length || null}>Друзья</Header>
+          {friends.map(friend => {
+            let accounts = []
+            if (friend.steam_id) {
+              accounts.push('Steam')
+            }
+            return (
+              <SimpleCell
+                key={friend.vk_user_id}
+                onClick={() => {
+                  setActivePanel({ name: PANELS.profile, id: friend.vk_user_id, goBack: PANELS.friends })
+                }}
+                description={accounts.join(', ')}
+                before={<Avatar src={friend.avatar} />}
+              >
+                {friend.first_name} {friend.last_name}
+              </SimpleCell>
+            )
+          })}
+          {!friends.length ? <Placeholder>Пока нет друзей</Placeholder> : null}
+        </Group>)
       }
     </Panel>
   )
