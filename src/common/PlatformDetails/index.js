@@ -126,7 +126,7 @@ const PlatformDetails = ({ list = [] }) => {
               })
             }}
             key={game.game_id}
-            description={`Игровое время ${totalHours} ${word}`}
+            description={`Игровое время: ${totalHours} ${word}`}
             before={<Avatar mode="app" src={game.logo1 || game.logo2} />}
             after={game.is_favorite ? <Icon28Favorite /> : <Icon28FavoriteOutline />}
           >
