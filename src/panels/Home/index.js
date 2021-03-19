@@ -65,7 +65,7 @@ const Home = ({ id, user, title }) => {
             //   })
             // }}
           >
-            <Avatar size={88} mode="app" src={game.logo1} />
+            <Avatar size={88} mode="app" src={game.logo2} />
           </HorizontalCell>
         )
       })}

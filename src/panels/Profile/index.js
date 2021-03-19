@@ -48,7 +48,7 @@ const FavoriteGames = ({ games, showAction }) => {
         return (
           <SimpleCell
             key={game.game_id}
-            before={<Avatar mode='app' size={32} src={game.logo1} />}
+            before={<Avatar mode='app' size={32} src={game.logo2} />}
             description={`${Math.floor(game.play_time_minutes / 60)} часов`}
             after={showAction && <Icon28Favorite onClick={() => {
               unmark(game.game_id, game.platform)
