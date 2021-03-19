@@ -23,11 +23,11 @@ import { Icon12User, Icon28StoryOutline, Icon20StoryOutline } from '@vkontakte/i
 import Div from '@vkontakte/vkui/dist/components/Div/Div'
 import PanelHeader from '../../common/PanelHeader'
 import { MODALS, PANELS } from '../../constants'
-import { addToFaivorite, getFriends, getUser, removeFromFaivorite, setStatus } from '../../api'
+import { getFriends, getUser, removeFromFaivorite, setStatus } from '../../api'
 
 import SteamIcon from '../../assets/steam.jpg'
 
-import { initStory } from '../../utils'
+import { initStory, numWord } from '../../utils'
 
 const FavoriteGames = ({ games, showAction }) => {
   const { setUser } = useContext(AppContext)
@@ -133,7 +133,8 @@ export const StatusForm = () => {
 
 export const StoryPopup = ({ total }) => {
   const requestStory = () => {
-    initStory(`Я играл в игры ${total} часов`, totalv)
+    const word = numWord(total, ['час', 'часа', 'часов'])
+    initStory(`Я играл в игры ${word}`, total)
   }
   return (
     <Div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

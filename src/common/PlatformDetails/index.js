@@ -63,7 +63,7 @@ export const GamePopup = () => {
   const word = numWord(totalHours, ['час', 'часа', 'часов'])
 
   const requestStory = () => {
-    initStory(`${totalHours} ${word} в ${title}`, totalHours, game.logo1)
+    initStory(`${totalHours} ${word} в ${game.title}`, totalHours, game.logo1)
   }
 
   return (
