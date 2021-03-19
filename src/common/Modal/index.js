@@ -15,10 +15,10 @@ const Modal = ({ activeModal }) => {
     <ModalRoot
       activeModal={activeModal ? activeModal.key : null}
       onClose={() => {
-        setActiveModal(null)
+        setActiveModal({ key: null, props: {} })
       }}
     >
-      <ModalPage id='noop' />
+      <ModalPage id="noop" />
       <ModalCard id={MODALS.gameItem}>
         <GamePopup {...(activeModal ? activeModal.props : {})} />
       </ModalCard>

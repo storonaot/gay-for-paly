@@ -33,14 +33,14 @@ export const getUser = () =>
     method: 'GET',
   }).then(toJSON)
 
-export const setStatus = (status) =>
+export const setStatus = status =>
   fetch(`${URL}/status`, {
     ...defaultOptions,
     method: 'POST',
     body: JSON.stringify({ status }),
   }).then(toJSON)
 
-export const getFriends = async (userIds) => {
+export const getFriends = async userIds => {
   try {
     if (!userIds || !userIds.length) {
       const { access_token } = await bridge.send('VKWebAppGetAuthToken', {
@@ -70,16 +70,16 @@ export const updatePrivateStatus = privateStatus =>
     body: JSON.stringify({ private_status: privateStatus }),
   }).then(toJSON)
 
-export const addToFaivorite = gameId =>
+export const addToFaivorite = (gameId, platform) =>
   fetch(`${URL}/add-to-favorite`, {
     ...defaultOptions,
     method: 'POST',
-    body: JSON.stringify({ game_id: gameId }),
+    body: JSON.stringify({ game_id: gameId, platform }),
   })
 
-export const removeFromFaivorite = gameId =>
+export const removeFromFaivorite = (gameId, platform) =>
   fetch(`${URL}/remove-from-favorite`, {
     ...defaultOptions,
     method: 'POST',
-    body: JSON.stringify({ game_id: gameId }),
+    body: JSON.stringify({ game_id: gameId, platform }),
   })

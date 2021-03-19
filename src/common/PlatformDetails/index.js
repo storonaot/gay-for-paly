@@ -35,32 +35,35 @@ const list = [
 ]
 
 export const GamePopup = () => {
-  const { activeModal, setUser } = useContext(AppContext)
-
-  if (!activeModal && !activeModal.props) return null
-
-  const { game } = activeModal.props
+  const { activeModal, setUser, setActiveModal } = useContext(AppContext)
 
   const updateUser = async () => {
     const updUser = await getUser()
 
     setUser(updUser)
+    setActiveModal({ key: null, props: {} })
   }
 
-  const mark = async id => {
-    await addToFaivorite(id)
+  const mark = async (id, platform) => {
+    await addToFaivorite(id, platform)
     updateUser()
   }
-  const unmark = async id => {
-    await removeFromFaivorite(id)
+  const unmark = async (id, platform) => {
+    await removeFromFaivorite(id, platform)
     updateUser()
   }
+
+  if (!activeModal && !activeModal.props) return null
+
+  const { game } = activeModal.props
+
+  if (!game) return null
 
   const totalHours = Math.floor(game.play_time_minutes / 60)
   const word = numWord(totalHours, ['час', 'часа', 'часов'])
 
   const requestStory = () => {
-    initStory(`${total} часов в ${title}`, total, imgSrc)
+    initStory(`${totalHours} ${word} в ${title}`, totalHours, game.logo2)
   }
 
   return (
@@ -103,10 +106,10 @@ export const GamePopup = () => {
         onClick={
           game.is_favorite
             ? () => {
-                unmark(game.id)
+                unmark(game.game_id, game.platform)
               }
             : () => {
-                mark(game.id)
+                mark(game.game_id, game.platform)
               }
         }
       >
