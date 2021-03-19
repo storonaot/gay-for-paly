@@ -13,7 +13,9 @@ import {
   RichCell,
   Title,
   Caption,
-  Subhead, ScreenSpinner,
+  Subhead,
+  ScreenSpinner,
+  Placeholder,
 } from '@vkontakte/vkui'
 import { AppContext } from '../../context'
 
@@ -42,54 +44,56 @@ const FavoriteGames = ({ games, showAction }) => {
   }
   return (
     <Group>
-      <Header mode='primary'>Любимые игры</Header>
+      <Header mode="primary">Любимые игры</Header>
       {games &&
-      games.map(game => {
-        return (
-          <SimpleCell
-            key={game.game_id}
-            before={<Avatar mode='app' size={32} src={game.logo1 || game.logo2} />}
-            description={`${Math.floor(game.play_time_minutes / 60)} часов`}
-            after={showAction && <Icon28Favorite onClick={() => {
-              unmark(game.game_id, game.platform)
-            }} />}
-          >
-            {game.title}
-          </SimpleCell>
-        )
-      })}
+        games.map(game => {
+          return (
+            <SimpleCell
+              key={game.game_id}
+              before={<Avatar mode="app" size={32} src={game.logo1 || game.logo2} />}
+              description={`${Math.floor(game.play_time_minutes / 60)} часов`}
+              after={
+                showAction && (
+                  <Icon28Favorite
+                    onClick={() => {
+                      unmark(game.game_id, game.platform)
+                    }}
+                  />
+                )
+              }
+            >
+              {game.title}
+            </SimpleCell>
+          )
+        })}
     </Group>
   )
 }
 
-const Accounts = ({ user }) => {
-  let accounts = []
-  if (user && user.steam_id) {
-    accounts.push({
-      id: 1,
-      nickname: user.steam_username,
-      avatar: SteamIcon,
-      title: 'Steam',
-    })
-  }
+const Accounts = ({ accounts }) => {
   return (
     <Group>
-      <Header mode='primary'>Аккаунты</Header>
-      {accounts.map(account => {
-        return (
-          <SimpleCell
-            key={account.id}
-            before={<Avatar mode='app' size={32} src={account.avatar} />}
-            description={
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Icon12User /> {account.nickname}
-              </div>
-            }
-          >
-            {account.title}
-          </SimpleCell>
-        )
-      })}
+      <Header mode="primary">Аккаунты</Header>
+
+      {accounts.length ? (
+        accounts.map(account => {
+          return (
+            <SimpleCell
+              key={account.id}
+              before={<Avatar mode="app" size={32} src={account.avatar} />}
+              description={
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <Icon12User /> {account.nickname}
+                </div>
+              }
+            >
+              {account.title}
+            </SimpleCell>
+          )
+        })
+      ) : (
+        <Placeholder>Пока не добавлено ни одного аккаунта</Placeholder>
+      )}
     </Group>
   )
 }
@@ -115,15 +119,15 @@ export const StatusForm = () => {
   return (
     <FormLayout>
       <FormItem>
-        <Title level='2' style={{ textAlign: 'center' }} weight='medium'>
+        <Title level="2" style={{ textAlign: 'center' }} weight="medium">
           Статус
         </Title>
       </FormItem>
       <FormItem>
-        <Input type='text' value={statusBuf} onChange={onChange} />
+        <Input type="text" value={statusBuf} onChange={onChange} />
       </FormItem>
       <FormItem>
-        <Button size='l' stretched onClick={onSave}>
+        <Button size="l" stretched onClick={onSave}>
           Сохранить
         </Button>
       </FormItem>
@@ -138,21 +142,21 @@ export const StoryPopup = ({ total }) => {
   }
   return (
     <Div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <Icon56DiamondOutline fill='var(--accent)' />
+      <Icon56DiamondOutline fill="var(--accent)" />
       <Spacing size={17} />
-      <Title level='2' style={{ textAlign: 'center' }} weight='medium'>
+      <Title level="2" style={{ textAlign: 'center' }} weight="medium">
         {total} часов
       </Title>
       <Spacing size={8} />
-      <Subhead style={{ color: 'var(--text_subhead)' }} weight='regular'>
+      <Subhead style={{ color: 'var(--text_subhead)' }} weight="regular">
         проведено в играх Steam и Battle.net
       </Subhead>
       <Spacing size={20} />
-      <Caption style={{ color: 'var(--text_placeholder)' }} level='1' weight='regular'>
+      <Caption style={{ color: 'var(--text_placeholder)' }} level="1" weight="regular">
         Сколько бессоных ночей
       </Caption>
       <Spacing size={32} />
-      <Button onClick={requestStory} before={<Icon20StoryOutline />} size='l' stretched>
+      <Button onClick={requestStory} before={<Icon20StoryOutline />} size="l" stretched>
         Поделиться в истории
       </Button>
     </Div>
@@ -171,7 +175,7 @@ const Profile = ({ id, title, user, userId }) => {
       setUserInfo(user)
     } else {
       const fetchData = async () => {
-        setActivePopout(<ScreenSpinner size='large' />)
+        setActivePopout(<ScreenSpinner size="large" />)
         getFriends([userId])
           .then(resp => {
             for (let i = 0; i < resp.length && !userInfo; i++) {
@@ -205,6 +209,16 @@ const Profile = ({ id, title, user, userId }) => {
 
   const userName = userInfo ? `${userInfo.first_name} ${userInfo.last_name}` : 'Профиль'
 
+  let accounts = []
+  if (user && user.steam_id) {
+    accounts.push({
+      id: 1,
+      nickname: user.steam_username,
+      avatar: SteamIcon,
+      title: 'Steam',
+    })
+  }
+
   return (
     <Panel id={id}>
       <PanelHeader
@@ -218,7 +232,7 @@ const Profile = ({ id, title, user, userId }) => {
               after={
                 isMyProfile && (
                   <Icon28StoryOutline
-                    fill='var(--button_primary_background)'
+                    fill="var(--button_primary_background)"
                     onClick={() => {
                       setActiveModal({ key: MODALS.storyPopup, props: { total: total } })
                     }}
@@ -236,8 +250,8 @@ const Profile = ({ id, title, user, userId }) => {
                         setActiveModal({ key: MODALS.statusForm })
                       }}
                     >
-                    {userInfo.status ? userInfo.status : 'Установить статус'}
-                  </span>
+                      {userInfo.status ? userInfo.status : 'Установить статус'}
+                    </span>
                   ) : (
                     userInfo.status
                   )}
@@ -249,8 +263,10 @@ const Profile = ({ id, title, user, userId }) => {
               {userName}
             </RichCell>
           </Group>
-          <Accounts user={userInfo} />
-          <FavoriteGames showAction={isMyProfile} games={favoriteGames} />
+          <Accounts accounts={accounts} />
+          {accounts.length ? (
+            <FavoriteGames showAction={isMyProfile} games={favoriteGames} />
+          ) : null}
         </>
       )}
     </Panel>

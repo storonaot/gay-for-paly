@@ -51,11 +51,11 @@ export const GamePopup = () => {
     <Div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <img
         src={game.logo1 || game.logo2}
-        width='72px'
-        height='72px'
+        width="72px"
+        height="72px"
         style={{ borderRadius: '8px', marginBottom: 16 }}
       />
-      <Title weight='medium' level='2' style={{ marginBottom: 8 }}>
+      <Title weight="medium" level="2" style={{ marginBottom: 8 }}>
         {totalHours} {word}
       </Title>
       <div
@@ -73,25 +73,25 @@ export const GamePopup = () => {
       <Button
         onClick={requestStory}
         before={<Icon24StoryOutline />}
-        size='l'
+        size="l"
         stretched
         style={{ marginBottom: 8 }}
       >
         Поделиться в истории
       </Button>
       <Button
-        mode='secondary'
-        size='l'
+        mode="secondary"
+        size="l"
         stretched
         before={<Icon24FavoriteOutline />}
         onClick={
           game.is_favorite
             ? () => {
-              unmark(game.game_id, game.platform)
-            }
+                unmark(game.game_id, game.platform)
+              }
             : () => {
-              mark(game.game_id, game.platform)
-            }
+                mark(game.game_id, game.platform)
+              }
         }
       >
         {game.is_favorite ? 'Удалить из избранного' : 'Добавить игру в избранное'}
@@ -104,7 +104,13 @@ const PlatformDetails = ({ list = [] }) => {
   const { setActiveModal } = useContext(AppContext)
 
   return (
-    <Group header={<Header mode='secondary'>{list.length} игр</Header>}>
+    <Group
+      header={
+        <Header mode="secondary">
+          {list.length} {numWord(list.length, ['игра', 'игры', 'игр'])}
+        </Header>
+      }
+    >
       {list.map(game => {
         const totalHours = Math.floor(game.play_time_minutes / 60)
         const word = numWord(totalHours, ['час', 'часа', 'часов'])
@@ -121,7 +127,7 @@ const PlatformDetails = ({ list = [] }) => {
             }}
             key={game.game_id}
             description={`Игровое время ${totalHours} ${word}`}
-            before={<Avatar mode='app' src={game.logo1 || game.logo2} />}
+            before={<Avatar mode="app" src={game.logo1 || game.logo2} />}
             after={game.is_favorite ? <Icon28Favorite /> : <Icon28FavoriteOutline />}
           >
             {game.title}
