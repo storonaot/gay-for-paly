@@ -19,7 +19,7 @@ export const initStory = (prefix, total, imageUrl) => {
   if (osname === IOS) {
     space = ' '
   }
-  let text = `${prefix}!${space}\n`
+  let text = `${prefix}!${space}`
   if (total <= 5000) {
     text =
       `${text} Я мог бы заработать ${total * 250}${space}` +
