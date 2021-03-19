@@ -17,35 +17,47 @@ import {
 } from '@vkontakte/vkui'
 import { AppContext } from '../../context'
 
-import Icon24UnfavoriteOutline from '@vkontakte/icons/dist/24/unfavorite_outline'
+import Icon28Favorite from '@vkontakte/icons/dist/24/favorite'
 import Icon56DiamondOutline from '@vkontakte/icons/dist/56/diamond_outline'
 import { Icon12User, Icon28StoryOutline, Icon20StoryOutline } from '@vkontakte/icons'
 import Div from '@vkontakte/vkui/dist/components/Div/Div'
 import PanelHeader from '../../common/PanelHeader'
 import { MODALS, PANELS } from '../../constants'
-import { getFriends, setStatus } from '../../api'
+import { addToFaivorite, getFriends, getUser, removeFromFaivorite, setStatus } from '../../api'
 
 import SteamIcon from '../../assets/steam.jpg'
 
 import { initStory } from '../../utils'
 
 const FavoriteGames = ({ games, showAction }) => {
+  const { setUser } = useContext(AppContext)
+  const updateUser = async () => {
+    const updUser = await getUser()
+    setUser(updUser)
+  }
+
+  const unmark = async (id, platform) => {
+    await removeFromFaivorite(id, platform)
+    updateUser()
+  }
   return (
     <Group>
-      <Header mode="primary">Любимые игры</Header>
+      <Header mode='primary'>Любимые игры</Header>
       {games &&
-        games.map(game => {
-          return (
-            <SimpleCell
-              key={game.game_id}
-              before={<Avatar mode="app" size={32} src={game.logo1} />}
-              description={`${Math.floor(game.play_time_minutes / 60)} часов`}
-              after={showAction && <Icon24UnfavoriteOutline />}
-            >
-              {game.title}
-            </SimpleCell>
-          )
-        })}
+      games.map(game => {
+        return (
+          <SimpleCell
+            key={game.game_id}
+            before={<Avatar mode='app' size={32} src={game.logo1} />}
+            description={`${Math.floor(game.play_time_minutes / 60)} часов`}
+            after={showAction && <Icon28Favorite onClick={() => {
+              unmark(game.game_id, game.platform)
+            }} />}
+          >
+            {game.title}
+          </SimpleCell>
+        )
+      })}
     </Group>
   )
 }
@@ -62,12 +74,12 @@ const Accounts = ({ user }) => {
   }
   return (
     <Group>
-      <Header mode="primary">Аккаунты</Header>
+      <Header mode='primary'>Аккаунты</Header>
       {accounts.map(account => {
         return (
           <SimpleCell
             key={account.id}
-            before={<Avatar mode="app" size={32} src={account.avatar} />}
+            before={<Avatar mode='app' size={32} src={account.avatar} />}
             description={
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Icon12User /> {account.nickname}
@@ -92,9 +104,9 @@ export const StatusForm = () => {
   }
 
   const onSave = () => {
-    setStatus(statusBuf)
+    setStatus(statusBuf.trim())
       .then(() => {
-        setUser({ ...user, status: statusBuf })
+        setUser({ ...user, status: statusBuf.trim() })
       })
       .finally(() => {
         setActiveModal(null)
@@ -103,15 +115,15 @@ export const StatusForm = () => {
   return (
     <FormLayout>
       <FormItem>
-        <Title level="2" style={{ textAlign: 'center' }} weight="medium">
+        <Title level='2' style={{ textAlign: 'center' }} weight='medium'>
           Статус
         </Title>
       </FormItem>
       <FormItem>
-        <Input type="text" value={statusBuf} onChange={onChange} />
+        <Input type='text' value={statusBuf} onChange={onChange} />
       </FormItem>
       <FormItem>
-        <Button size="l" stretched onClick={onSave}>
+        <Button size='l' stretched onClick={onSave}>
           Сохранить
         </Button>
       </FormItem>
@@ -121,25 +133,25 @@ export const StatusForm = () => {
 
 export const StoryPopup = ({ total }) => {
   const requestStory = () => {
-    initStory(`Я играл в игры ${total} часов`, total)
+    initStory(`Я играл в игры ${total} часов`, totalv)
   }
   return (
     <Div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <Icon56DiamondOutline fill="var(--accent)" />
+      <Icon56DiamondOutline fill='var(--accent)' />
       <Spacing size={17} />
-      <Title level="2" style={{ textAlign: 'center' }} weight="medium">
+      <Title level='2' style={{ textAlign: 'center' }} weight='medium'>
         {total} часов
       </Title>
       <Spacing size={8} />
-      <Subhead style={{ color: 'var(--text_subhead)' }} weight="regular">
+      <Subhead style={{ color: 'var(--text_subhead)' }} weight='regular'>
         проведено в играх Steam и Battle.net
       </Subhead>
       <Spacing size={20} />
-      <Caption style={{ color: 'var(--text_placeholder)' }} level="1" weight="regular">
+      <Caption style={{ color: 'var(--text_placeholder)' }} level='1' weight='regular'>
         Сколько бессоных ночей
       </Caption>
       <Spacing size={32} />
-      <Button onClick={requestStory} before={<Icon20StoryOutline />} size="l" stretched>
+      <Button onClick={requestStory} before={<Icon20StoryOutline />} size='l' stretched>
         Поделиться в истории
       </Button>
     </Div>
@@ -200,7 +212,7 @@ const Profile = ({ id, title, user, userId }) => {
             after={
               isMyProfile && (
                 <Icon28StoryOutline
-                  fill="var(--button_primary_background)"
+                  fill='var(--button_primary_background)'
                   onClick={() => {
                     setActiveModal({ key: MODALS.storyPopup, props: { total: total } })
                   }}

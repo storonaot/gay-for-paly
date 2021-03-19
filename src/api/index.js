@@ -38,7 +38,8 @@ export const setStatus = status =>
     ...defaultOptions,
     method: 'POST',
     body: JSON.stringify({ status }),
-  }).then(toJSON)
+  }).then(toJSON).catch(() => {
+  })
 
 export const getFriends = async userIds => {
   try {
@@ -82,18 +83,4 @@ export const removeFromFaivorite = (gameId, platform) =>
     ...defaultOptions,
     method: 'POST',
     body: JSON.stringify({ game_id: gameId, platform }),
-  })
-
-export const detachSteam = () =>
-  fetch(`${URL}/detach/steam`, {
-    ...defaultOptions,
-    method: 'POST',
-  }).then(response => {
-    console.log('response', response)
-    if (response.ok) {
-      return fetch(`${URL}/sign-in`, {
-        ...defaultOptions,
-        method: 'GET',
-      }).then(toJSON)
-    }
   })
