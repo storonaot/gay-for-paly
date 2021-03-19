@@ -259,7 +259,7 @@ const Profile = ({ id, title, user, userId }) => {
                     userInfo.status
                   )}
                   <Spacing size={4} />
-                  <span>Всего в игре: {total} часов</span>
+                  <span>Всего в играх: {total} часов</span>
                 </div>
               }
             >
