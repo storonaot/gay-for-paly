@@ -29,22 +29,22 @@ const Home = ({ id, user, title }) => {
 
   const { steamGames, wargamingGames } = Array.isArray(user.games)
     ? user.games.reduce(
-      (acc, current) => {
-        if (current.platform === 'steam') {
-          return { steamGames: [...acc.steamGames, current], wargamingGames: acc.wargamingGames }
-        }
+        (acc, current) => {
+          if (current.platform === 'steam') {
+            return { steamGames: [...acc.steamGames, current], wargamingGames: acc.wargamingGames }
+          }
 
-        return { steamGames: acc.steamGames, wargamingGames: [...acc.wargamingGames, current] }
-      },
-      {
+          return { steamGames: acc.steamGames, wargamingGames: [...acc.wargamingGames, current] }
+        },
+        {
+          steamGames: [],
+          wargamingGames: [],
+        },
+      )
+    : {
         steamGames: [],
         wargamingGames: [],
-      },
-    )
-    : {
-      steamGames: [],
-      wargamingGames: [],
-    }
+      }
 
   const steamGamesTotal = steamGames.length
   const wargamingGamesTotal = wargamingGames.length
@@ -79,15 +79,39 @@ const Home = ({ id, user, title }) => {
       {user && (
         <Group>
           <RichCell
-            after={<Icon28ChevronRightOutline fill='var(--button_primary_background)' />}
+            after={<Icon28ChevronRightOutline fill="var(--button_primary_background)" />}
             onClick={() => {
               setActivePanel({ name: PANELS.profile, id: user.vk_user_id })
             }}
             multiline
-            bottom={<UsersStack photos={[SteamIcon, WargamingIcon]} />}
+            // bottom={<UsersStack photos={[SteamIcon, WargamingIcon]} />}
             before={user.avatar ? <Avatar src={user.avatar} size={72} /> : null}
           >
-            {`${user.first_name} ${user.last_name}`}
+            <div>
+              {`${user.first_name} ${user.last_name}`}
+              <div style={{ display: 'flex', marginTop: 8 }}>
+                {user.steam_link && (
+                  <a
+                    style={{ marginRight: 8 }}
+                    href={user.steam_link}
+                    rel="norefferer"
+                    target="_blank"
+                  >
+                    <Avatar mode="app" src={SteamIcon} size={24} />
+                  </a>
+                )}
+                {user.wargaming_id && (
+                  <a
+                    style={{ marginRight: 8 }}
+                    href="https://wargaming.com/ru/"
+                    rel="norefferer"
+                    target="_blank"
+                  >
+                    <Avatar mode="app" src={WargamingIcon} size={24} />
+                  </a>
+                )}
+              </div>
+            </div>
           </RichCell>
         </Group>
       )}
@@ -150,7 +174,7 @@ const Home = ({ id, user, title }) => {
             }
             indicator={
               wargamingGamesTotal ? (
-                <Counter size='s' mode='secondary'>
+                <Counter size="s" mode="secondary">
                   {wargamingGamesTotal}
                 </Counter>
               ) : null
@@ -171,7 +195,7 @@ const Home = ({ id, user, title }) => {
             onClick={() => {
               setActivePanel({ name: PANELS.settings })
             }}
-            action={<Button size='m'>Подключить Wargaming</Button>}
+            action={<Button size="m">Подключить Wargaming</Button>}
           >
             Подключите платформу Wargaming
           </Placeholder>
