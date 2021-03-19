@@ -5,12 +5,13 @@ import {
   Icon28Favorite,
   Icon24StoryOutline,
 } from '@vkontakte/icons'
-import { Group, Cell, Header, Avatar, Div, Button, Title } from '@vkontakte/vkui'
+import { Group, Cell, Header, Avatar, Div, Button, Title, Caption } from '@vkontakte/vkui'
 
 import { AppContext } from '../../context'
 
 import DotaImg from '../../assets/dota.jpg'
 import { MODALS } from '../../constants'
+import { initStory } from '../../utils'
 
 const list = [
   { id: 1, name: 'Dota 2', description: '1 448 часов', selected: true },
@@ -30,19 +31,21 @@ const list = [
   { id: 15, name: 'Dota 2', description: '1 448 часов', selected: false },
   { id: 16, name: 'Dota 2', description: '1 448 часов', selected: false },
 ]
-const imgSrc = 'https://sun9-24.userapi.com/c639120/v639120173/3fe6f/tgPr7lecAY4.jpg'
 
-export const GamePopup = () => {
+export const GamePopup = ({ total, title, imgSrc }) => {
+  const requestStory = () => {
+    initStory(`${total} часов в ${title}`, total, imgSrc)
+  }
   return (
     <Div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <img
         src={imgSrc}
-        width="72px"
-        height="72px"
+        width='72px'
+        height='72px'
         style={{ borderRadius: '8px', marginBottom: 16 }}
       />
-      <Title weight="medium" level="2" style={{ marginBottom: 8 }}>
-        5 132 часов
+      <Title weight='medium' level='2' style={{ marginBottom: 8 }}>
+        {total} часов
       </Title>
       <div
         style={{
@@ -54,13 +57,13 @@ export const GamePopup = () => {
         Проведено в игре
       </div>
       <div style={{ marginBottom: 32, color: '#6D7885', fontSize: '14px' }}>
-        Тут смешной текст.АААА
+        Сколько бессоных ночей
       </div>
-      <Button before={<Icon24StoryOutline />} size="l" stretched style={{ marginBottom: 8 }}>
+      <Button onClick={requestStory} before={<Icon24StoryOutline />} size='l' stretched style={{ marginBottom: 8 }}>
         Поделиться в истории
       </Button>
-      <Button mode="secondary" size="l" stretched before={<Icon24FavoriteOutline />}>
-        Добавить игру в избранное13
+      <Button mode='secondary' size='l' stretched before={<Icon24FavoriteOutline />}>
+        Добавить игру в избранное
       </Button>
     </Div>
   )
@@ -70,14 +73,14 @@ const PlatformDetails = () => {
   const { setActiveModal } = useContext(AppContext)
 
   return (
-    <Group header={<Header mode="secondary">16 игр</Header>}>
+    <Group header={<Header mode='secondary'>16 игр</Header>}>
       {list.map(item => (
         <Cell
           onClick={() => {
-            setActiveModal({ key: MODALS.gameItem, props: { imgSrc: DotaImg } })
+            setActiveModal({ key: MODALS.gameItem, props: { total: 0, title: item.name, imgSrc: DotaImg } })
           }}
           description={item.description}
-          before={<Avatar mode="app" src={DotaImg} />}
+          before={<Avatar mode='app' src={DotaImg} />}
           after={item.selected ? <Icon28Favorite /> : <Icon28FavoriteOutline />}
         >
           {item.name}
