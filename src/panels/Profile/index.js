@@ -17,20 +17,17 @@ import {
 } from '@vkontakte/vkui'
 import { AppContext } from '../../context'
 
-import { platform, IOS } from '@vkontakte/vkui'
 import Icon24UnfavoriteOutline from '@vkontakte/icons/dist/24/unfavorite_outline'
 import Icon56DiamondOutline from '@vkontakte/icons/dist/56/diamond_outline'
 import { Icon12User, Icon28StoryOutline, Icon20StoryOutline } from '@vkontakte/icons'
 import Div from '@vkontakte/vkui/dist/components/Div/Div'
 import PanelHeader from '../../common/PanelHeader'
 import { MODALS, PANELS } from '../../constants'
-import bridge from '@vkontakte/vk-bridge'
-import { getFriends } from '../../api'
+import { getFriends, setStatus } from '../../api'
 
 import SteamIcon from '../../assets/steam.jpg'
-import BattlenetIcon from '../../assets/battlenet.jpg'
 
-const osname = platform()
+import { initStory } from '../../utils'
 
 const FavoriteGames = ({ games, showAction }) => {
   return (
@@ -86,6 +83,23 @@ const Accounts = ({ user }) => {
 }
 
 export const StatusForm = () => {
+  const { setActiveModal, user, setUser } = useContext(AppContext)
+  const [statusBuf, setStatusBuf] = useState('')
+
+  const onChange = e => {
+    const { value } = e.currentTarget
+    setStatusBuf(value)
+  }
+
+  const onSave = () => {
+    setStatus(statusBuf)
+      .then(() => {
+        setUser({ ...user, status: statusBuf })
+      })
+      .finally(() => {
+        setActiveModal(null)
+      })
+  }
   return (
     <FormLayout>
       <FormItem>
@@ -94,10 +108,10 @@ export const StatusForm = () => {
         </Title>
       </FormItem>
       <FormItem>
-        <Input type="text" />
+        <Input type="text" value={statusBuf} onChange={onChange} />
       </FormItem>
       <FormItem>
-        <Button size="l" stretched>
+        <Button size="l" stretched onClick={onSave}>
           Сохранить
         </Button>
       </FormItem>
@@ -107,63 +121,7 @@ export const StatusForm = () => {
 
 export const StoryPopup = ({ total }) => {
   const requestStory = () => {
-    let space = '\n'
-    if (osname === IOS) {
-      space = ' '
-    }
-    let text =
-      'Я играл в игры ' +
-      total +
-      ' часов' +
-      space +
-      '\n' +
-      'А мог бы заработать ' +
-      total * 250 +
-      space +
-      'курьером, но выбрал' +
-      space +
-      'киберспорт😉'
-    let imageUrl =
-      'https://pp.userapi.com/ESlojY-aShK5orIRfa64W7vtw1KDXbdH7ZdgbA/dSJCXRedGT8.jpg?ecomm=1'
-    bridge.send('VKWebAppShowStoryBox', {
-      background_type: 'image',
-      url: 'https://pp.userapi.com/gw4YJQavFh93ELabRAprREv1xSOj-e37eizkUg/0Q7vior7ZQQ.jpg?ecomm=1',
-      attachment: {
-        text: 'go_to',
-        type: 'url',
-        url: 'https://vk.com/app7794940',
-      },
-      stickers: [
-        {
-          sticker_type: 'renderable',
-          sticker: {
-            url: imageUrl,
-            content_type: 'image',
-            transform: {
-              relation_width: 0.2,
-              translation_y: -0.07,
-            },
-          },
-        },
-        {
-          sticker_type: 'native',
-          sticker: {
-            action_type: 'text',
-            action: {
-              text,
-              style: 'classic',
-              alignment: 'center',
-              background_style: 'none',
-              selection_color: '#000000',
-            },
-            transform: {
-              relation_width: 0.8,
-              translation_y: 0.1,
-            },
-          },
-        },
-      ],
-    })
+    initStory(`Я играл в игры ${total} часов`, total)
   }
   return (
     <Div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -178,7 +136,7 @@ export const StoryPopup = ({ total }) => {
       </Subhead>
       <Spacing size={20} />
       <Caption style={{ color: 'var(--text_placeholder)' }} level="1" weight="regular">
-        Это больше, чем у 99% пользователей
+        Сколько бессоных ночей
       </Caption>
       <Spacing size={32} />
       <Button onClick={requestStory} before={<Icon20StoryOutline />} size="l" stretched>
@@ -188,9 +146,9 @@ export const StoryPopup = ({ total }) => {
   )
 }
 
-const Profile = ({ id, user, title, userId }) => {
-  const isMyProfile = user ? user.vk_user_id === userId : false
+const Profile = ({ id, title, user, userId }) => {
   const { setActiveModal, activePanel } = useContext(AppContext)
+  const isMyProfile = user ? user.vk_user_id === userId : false
   const [userInfo, setUserInfo] = useState({})
   const [favoriteGames, setFavoriteGames] = useState([])
   const [total, setTotal] = useState(0)
@@ -206,18 +164,6 @@ const Profile = ({ id, user, title, userId }) => {
               if (resp[i].vk_user_id === userId) {
                 setUserInfo(resp[i])
               }
-              if (resp[i].games) {
-                let favoriteGamesBuf = []
-                let totalMinutes = 0
-                resp[i].games.forEach(game => {
-                  if (game.is_favorite) {
-                    favoriteGamesBuf.push(game)
-                  }
-                  totalMinutes += game.play_time_minutes
-                })
-                setFavoriteGames(favoriteGamesBuf)
-                setTotal(Math.round(totalMinutes / 60))
-              }
             }
           })
           .catch(error => {
@@ -226,7 +172,19 @@ const Profile = ({ id, user, title, userId }) => {
       }
       fetchData()
     }
-  }, [])
+    if (userInfo.games) {
+      let favoriteGamesBuf = []
+      let totalMinutes = 0
+      userInfo.games.forEach(game => {
+        if (game.is_favorite) {
+          favoriteGamesBuf.push(game)
+        }
+        totalMinutes += game.play_time_minutes
+      })
+      setFavoriteGames(favoriteGamesBuf)
+      setTotal(Math.round(totalMinutes / 60))
+    }
+  }, [user, userInfo])
 
   const userName = userInfo ? `${userInfo.first_name} ${userInfo.last_name}` : 'Профиль'
 
@@ -244,7 +202,7 @@ const Profile = ({ id, user, title, userId }) => {
                 <Icon28StoryOutline
                   fill="var(--button_primary_background)"
                   onClick={() => {
-                    setActiveModal({ key: MODALS.storyPopup, total: total })
+                    setActiveModal({ key: MODALS.storyPopup, props: { total: total } })
                   }}
                 />
               )

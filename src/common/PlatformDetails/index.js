@@ -5,14 +5,13 @@ import {
   Icon28Favorite,
   Icon24StoryOutline,
 } from '@vkontakte/icons'
-import { Group, Cell, Header, Avatar, Div, Button, Title } from '@vkontakte/vkui'
+import { Group, Cell, Header, Avatar, Div, Button, Title, Caption } from '@vkontakte/vkui'
 
 import { AppContext } from '../../context'
 
-import DotaImg from '../../assets/dota.jpg'
 import { MODALS } from '../../constants'
 
-import { numWord } from '../../utils'
+import { numWord, initStory } from '../../utils'
 
 import { addToFaivorite, removeFromFaivorite, getUser } from '../../api'
 
@@ -60,6 +59,10 @@ export const GamePopup = () => {
   const totalHours = Math.floor(game.play_time_minutes / 60)
   const word = numWord(totalHours, ['час', 'часа', 'часов'])
 
+  const requestStory = () => {
+    initStory(`${total} часов в ${title}`, total, imgSrc)
+  }
+
   return (
     <Div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <img
@@ -81,9 +84,15 @@ export const GamePopup = () => {
         Проведено в игре
       </div>
       <div style={{ marginBottom: 32, color: '#6D7885', fontSize: '14px' }}>
-        Тут смешной текст.АААА
+        Сколько бессоных ночей
       </div>
-      <Button before={<Icon24StoryOutline />} size="l" stretched style={{ marginBottom: 8 }}>
+      <Button
+        onClick={requestStory}
+        before={<Icon24StoryOutline />}
+        size="l"
+        stretched
+        style={{ marginBottom: 8 }}
+      >
         Поделиться в истории
       </Button>
       <Button
@@ -108,7 +117,7 @@ export const GamePopup = () => {
 }
 
 const PlatformDetails = ({ list = [] }) => {
-  const { setActiveModal, setUser } = useContext(AppContext)
+  const { setActiveModal } = useContext(AppContext)
 
   return (
     <Group header={<Header mode="secondary">{list.length} игр</Header>}>
