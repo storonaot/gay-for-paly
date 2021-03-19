@@ -59,12 +59,12 @@ const Home = ({ id, user, title }) => {
             //   setActiveModal({
             //     key: MODALS.gameItem,
             //     props: {
-            //       imgSrc: game.logo2,
+            //       imgSrc: game.logo1,
             //     },
             //   })
             // }}
           >
-            <Avatar size={88} mode="app" src={game.logo2} />
+            <Avatar size={88} mode="app" src={game.logo1} />
           </HorizontalCell>
         )
       })}

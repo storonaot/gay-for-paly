@@ -63,13 +63,13 @@ export const GamePopup = () => {
   const word = numWord(totalHours, ['час', 'часа', 'часов'])
 
   const requestStory = () => {
-    initStory(`${totalHours} ${word} в ${title}`, totalHours, game.logo2)
+    initStory(`${totalHours} ${word} в ${title}`, totalHours, game.logo1)
   }
 
   return (
     <Div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <img
-        src={game.logo2}
+        src={game.logo1}
         width="72px"
         height="72px"
         style={{ borderRadius: '8px', marginBottom: 16 }}
@@ -139,7 +139,7 @@ const PlatformDetails = ({ list = [] }) => {
               })
             }}
             description={`Игровое время ${totalHours} ${word}`}
-            before={<Avatar mode="app" src={game.logo2} />}
+            before={<Avatar mode="app" src={game.logo1} />}
             after={game.is_favorite ? <Icon28Favorite /> : <Icon28FavoriteOutline />}
           >
             {game.title}
