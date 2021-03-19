@@ -6,13 +6,17 @@ import { PANELS } from '../../constants'
 
 import PlatformDetails from '../../common/PlatformDetails'
 
-const BattleNet = ({ id, title }) => {
+const Wargaming = ({ id, title, user }) => {
+  const wargamingGames = Array.isArray(user.games)
+    ? user.games.filter(game => game.platform === 'wargaming')
+    : []
+
   return (
     <Panel id={id}>
       <PanelHeader goBack={PANELS.home} title={title} />
-      <PlatformDetails />
+      <PlatformDetails list={wargamingGames} />
     </Panel>
   )
 }
 
-export default BattleNet
+export default Wargaming

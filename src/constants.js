@@ -4,7 +4,7 @@ export const PANELS = {
   settings: 'settings',
   home: 'home',
   steam: 'steam',
-  buttleNet: 'buttleNet',
+  wargaming: 'wargaming',
 }
 
 export const MODALS = {

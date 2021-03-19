@@ -6,10 +6,10 @@ import PanelHeader from '../../common/PanelHeader'
 import Dropdown from '../../common/Dropdown'
 
 import SteamIcon from '../../assets/steam.jpg'
-import BattlenetIcon from '../../assets/battlenet.jpg'
+import WargamingIcon from '../../assets/wargaming.jpeg'
 
 import s from './styles.module.css'
-import { getUser, updatePrivateStatus, detachSteam } from '../../api'
+import { getUser, updatePrivateStatus, detachPlatform } from '../../api'
 import { AppContext } from '../../context'
 
 const menu = [
@@ -21,7 +21,7 @@ const menu = [
 const Settings = ({ id, title, user }) => {
   const platforms = [
     { id: 1, label: 'Steam', iconSrc: SteamIcon, connected: user ? user.steam_id : null },
-    { id: 2, label: 'Battle.net', iconSrc: BattlenetIcon, connected: false },
+    { id: 2, label: 'Wargaming', iconSrc: WargamingIcon, connected: user ? user.wargaming_id : null },
     // { id: 3, label: 'VK Game', iconSrc: BattlenetIcon, connected: false },
   ]
 
@@ -39,13 +39,13 @@ const Settings = ({ id, title, user }) => {
         actions={[
           {
             title: 'Продолжить',
-            action: fetchUser,
+            action: fetchSteamUser,
           },
         ]}
         onClose={() => {
           setActivePopout(null)
         }}
-        text="Подключение к аккаунту Steam"
+        text='Подключение к аккаунту Steam'
       />,
     )
 
@@ -58,7 +58,7 @@ const Settings = ({ id, title, user }) => {
     // 6. если нет показываем юзеру информацию о том что он не авторизовался с стиме и пусть попробует еще раз
   }
 
-  const fetchUser = async () => {
+  const fetchSteamUser = async () => {
     const updatedUser = await getUser()
 
     if (updatedUser) {
@@ -81,7 +81,7 @@ const Settings = ({ id, title, user }) => {
             onClose={() => {
               setActivePopout(null)
             }}
-            text="Не удалось подключиться к аккаунту Steam"
+            text='Не удалось подключиться к аккаунту Steam'
           />,
         )
 
@@ -89,7 +89,56 @@ const Settings = ({ id, title, user }) => {
     }
   }
 
-  const connectBattleNet = () => {}
+
+  const fetchWargamingUser = async () => {
+    const updatedUser = await getUser()
+
+    if (updatedUser) {
+      if (updatedUser.wargaming_id) setActivePopout(null)
+      else
+        setActivePopout(
+          <Alert
+            actions={[
+              {
+                title: 'Попробовать еще раз',
+                autoclose: true,
+                action: connectWargaming,
+              },
+              {
+                title: 'Отмена',
+                autoclose: true,
+                mode: 'cancel',
+              },
+            ]}
+            onClose={() => {
+              setActivePopout(null)
+            }}
+            text='Не удалось подключиться к аккаунту Wargaming'
+          />,
+        )
+
+      setUser(updatedUser)
+    }
+  }
+
+  const connectWargaming = () => {
+    setActivePopout(
+      <Alert
+        actions={[
+          {
+            title: 'Продолжить',
+            action: fetchWargamingUser,
+          },
+        ]}
+        onClose={() => {
+          setActivePopout(null)
+        }}
+        text='Подключение к аккаунту Wargaming'
+      />,
+    )
+
+    window.open(user.wargaming_attach_link)
+  }
 
   const renderMenu = () => (
     <>
@@ -115,16 +164,14 @@ const Settings = ({ id, title, user }) => {
   const getAfterComponent = platform => {
     if (platform.connected) return null
     return (
-      <div onClick={platform.label === 'Steam' ? connectSteam : connectBattleNet}>Подключить</div>
+      <div onClick={platform.label === 'Steam' ? connectSteam : connectWargaming}>Подключить</div>
     )
   }
 
   const detach = async platform => {
-    if (platform.label === 'Steam') {
-      const updUser = detachSteam()
-
-      setUser(updUser)
-    }
+    detachPlatform(platform.label.toLowerCase()).then(response => {
+      setUser(response)
+    })
   }
 
   const getIndicatorComponent = platform => {
@@ -134,7 +181,7 @@ const Settings = ({ id, title, user }) => {
           content={
             <ActionSheetItem
               autoclose
-              mode="destructive"
+              mode='destructive'
               onClick={() => {
                 detach(platform)
               }}
@@ -157,7 +204,7 @@ const Settings = ({ id, title, user }) => {
 
   return (
     <Panel id={id}>
-      <PanelHeader title={title} goBack="home" />
+      <PanelHeader title={title} goBack='home' />
       <Group>
         <Cell
           after={
