@@ -38,7 +38,7 @@ export const setStatus = status =>
     ...defaultOptions,
     method: 'POST',
     body: JSON.stringify({ status }),
-  }).then(toJSON)
+  })
 
 export const getFriends = async userIds => {
   try {
