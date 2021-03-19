@@ -30,7 +30,7 @@ const Friends = ({ id, title }) => {
       <PanelHeader title={title} goBack={PANELS.home} />
       {friends &&
       <Group>
-        <Header>Друзья</Header>
+        <Header indicator={friends.length || null}>Друзья</Header>
         {friends.map(friend => {
           let accounts = []
           if (friend.steam_id) {
