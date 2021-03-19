@@ -73,6 +73,13 @@ const Home = ({ id, user, title }) => {
     </>
   )
 
+  let iconsStack = []
+  if (user.steam_id) {
+    iconsStack.push(SteamIcon)
+  }
+  if (user.wargaming_id) {
+    iconsStack.push(WargamingIcon)
+  }
   return (
     <Panel id={id}>
       <PanelHeader title={title} />

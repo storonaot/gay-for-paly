@@ -92,7 +92,6 @@ const Accounts = ({ user }) => {
       avatar: WargamingIcon,
       title: 'Wargaming',
     })
-    console.log(user)
   }
   return (
     <Group>
@@ -276,7 +275,7 @@ const Profile = ({ id, title, user, userId }) => {
               {userName}
             </RichCell>
           </Group>
-          <Accounts user={user} />
+          <Accounts user={userInfo} />
           <FavoriteGames showAction={isMyProfile} games={favoriteGames} />
         </>
       )}
