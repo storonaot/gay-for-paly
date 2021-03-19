@@ -20,7 +20,7 @@ import BattleNet from './panels/BattleNet'
 import { signIn } from './api'
 
 const App = () => {
-  const [activePanel, setActivePanel] = useState({ name: PANELS.settings })
+  const [activePanel, setActivePanel] = useState({ name: PANELS.home })
   const [activePopout, setActivePopout] = useState(null) // <ScreenSpinner size='large'/>
   const [user, setUser] = useState(null)
   const [activeModal, setActiveModal] = useState({ key: null })
