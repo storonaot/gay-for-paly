@@ -49,11 +49,13 @@ const FavoriteGames = ({ games, showAction }) => {
       <Header mode="primary">Любимые игры</Header>
       {games && games.length ? (
         games.map(game => {
+          const total = Math.floor(game.play_time_minutes / 60);
+          const word = numWord(total, ['час', 'часа', 'часов'])
           return (
             <SimpleCell
               key={game.game_id}
               before={<Avatar mode="app" size={32} src={game.logo1 || game.logo2} />}
-              description={`${Math.floor(game.play_time_minutes / 60)} часов`}
+              description={`${total} ${word}`}
               after={
                 showAction && (
                   <Icon28Favorite
@@ -162,16 +164,17 @@ export const StoryPopup = ({ total }) => {
     const word = numWord(total, ['час', 'часа', 'часов'])
     initStory(`Я играл в игры ${total} ${word}`, total)
   }
+  const word = numWord(total, ['час', 'часа', 'часов'])
   return (
     <Div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <Icon56DiamondOutline fill="var(--accent)" />
       <Spacing size={17} />
       <Title level="2" style={{ textAlign: 'center' }} weight="medium">
-        {total} часов
+        {total} {word}
       </Title>
       <Spacing size={8} />
       <Subhead style={{ color: 'var(--text_subhead)' }} weight="regular">
-        проведено в играх Steam и Battle.net
+        проведено в играх Steam и Wargaming
       </Subhead>
       <Spacing size={20} />
       <Caption style={{ color: 'var(--text_placeholder)' }} level="1" weight="regular">
@@ -230,7 +233,7 @@ const Profile = ({ id, title, user, userId }) => {
   }, [user, userInfo])
 
   const userName = userInfo ? `${userInfo.first_name} ${userInfo.last_name}` : 'Профиль'
-
+  const word = numWord(total, ['час', 'часа', 'часов'])
   return (
     <Panel id={id}>
       <PanelHeader
@@ -268,7 +271,7 @@ const Profile = ({ id, title, user, userId }) => {
                     userInfo.status
                   )}
                   <Spacing size={4} />
-                  <span>Всего в играх: {total} часов</span>
+                  <span>Всего в играх: {total} {word}</span>
                 </div>
               }
             >
