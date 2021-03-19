@@ -44,7 +44,7 @@ export const getFriends = async userIds => {
   try {
     if (!userIds || !userIds.length) {
       const { access_token } = await bridge.send('VKWebAppGetAuthToken', {
-        app_id: 7794940,
+        app_id: 7793495,
         scope: 'friends,status',
       })
       const { response } = await bridge.send('VKWebAppCallAPIMethod', {

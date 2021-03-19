@@ -71,11 +71,11 @@ export const initStory = (prefix, total, imageUrl) => {
   }
   bridge.send('VKWebAppShowStoryBox', {
     background_type: 'image',
-    url: 'https://pp.userapi.com/gw4YJQavFh93ELabRAprREv1xSOj-e37eizkUg/0Q7vior7ZQQ.jpg?ecomm=1',
+    url: 'https://pp.userapi.com/OlPGELEYLmUXZxvAwilKyYWFNCrFaVG0_L5FuA/NIJ-POtprsM.jpg?ecomm=1',
     attachment: {
       text: 'go_to',
       type: 'url',
-      url: 'https://vk.com/app7794940',
+      url: 'https://vk.com/app7793495',
     },
     stickers,
   })
