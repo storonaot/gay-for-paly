@@ -67,7 +67,7 @@ const Accounts = ({ user }) => {
   if (user.steam_id) {
     accounts.push({
       id: 1,
-      nickname: user.steam_id,
+      nickname: user.steam_username,
       avatar: SteamIcon,
       title: 'Steam',
     })
