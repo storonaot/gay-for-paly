@@ -37,7 +37,7 @@ const list = [
 export const GamePopup = () => {
   const { activeModal, setUser } = useContext(AppContext)
 
-  if (!activeModal && !activeModal.props) return null
+  if (!activeModal || !activeModal.props) return null
 
   const { game } = activeModal.props
 
@@ -60,7 +60,7 @@ export const GamePopup = () => {
   const word = numWord(totalHours, ['час', 'часа', 'часов'])
 
   const requestStory = () => {
-    initStory(`${total} часов в ${title}`, total, imgSrc)
+    initStory(`${totalHours} часов в ${game.title}`, totalHours, game.logo1)
   }
 
   return (
