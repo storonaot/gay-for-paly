@@ -53,6 +53,7 @@ const Home = ({ id, user, title }) => {
       {list.map(game => {
         return (
           <HorizontalCell
+            key={game.game_id}
             size="m"
             header={game.title}
             // onClick={() => {
@@ -82,7 +83,6 @@ const Home = ({ id, user, title }) => {
               setActivePanel({ name: PANELS.profile, id: user.vk_user_id })
             }}
             multiline
-            caption="В игре 5 173 часа"
             bottom={<UsersStack photos={[SteamIcon, BattlenetIcon]} />}
             before={user.avatar ? <Avatar src={user.avatar} size={72} /> : null}
           >
