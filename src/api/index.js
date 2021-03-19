@@ -84,7 +84,7 @@ export const removeFromFaivorite = (gameId, platform) =>
     body: JSON.stringify({ game_id: gameId, platform }),
   })
 
-export const detachPlatform = (platform) =>
+export const detachPlatform = platform =>
   fetch(`${URL}/detach/${platform}`, {
     ...defaultOptions,
     method: 'POST',
@@ -96,3 +96,9 @@ export const detachPlatform = (platform) =>
       }).then(toJSON)
     }
   })
+
+export const getLeaders = () =>
+  fetch(`${URL}/public-leaders`, {
+    ...defaultOptions,
+    method: 'GET',
+  }).then(toJSON)

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   Panel,
   Group,
@@ -12,6 +12,7 @@ import {
   UsersStack,
   Placeholder,
   Button,
+  Cell,
 } from '@vkontakte/vkui'
 
 import { PANELS, MODALS } from '../../constants'
@@ -24,8 +25,19 @@ import PanelHeader from '../../common/PanelHeader'
 import { AppContext } from '../../context'
 import Wargaming from '../Wargaming'
 
+import { getLeaders } from '../../api'
+
+import { numWord } from '../../utils'
+
 const Home = ({ id, user, title }) => {
   const { setActivePanel, setActiveModal } = useContext(AppContext)
+  const [leaders, setLeaders] = useState([])
+
+  useEffect(async () => {
+    const resLeaders = await getLeaders()
+
+    setLeaders(resLeaders)
+  }, [])
 
   const { steamGames, wargamingGames } = Array.isArray(user.games)
     ? user.games.reduce(
@@ -208,6 +220,23 @@ const Home = ({ id, user, title }) => {
           </Placeholder>
         )}
       </Group>
+      {leaders.length ? (
+        <Group header={<Header>Топ-10 пользователей</Header>}>
+          {leaders.map(leader => {
+            const hours = Math.floor(leader.total_games_time / 60)
+            const word = numWord(hours, ['час', 'часа', 'часов'])
+
+            return (
+              <Cell
+                description={`${hours} ${word}`}
+                before={<Avatar size={48} src={leader.avatar} />}
+              >
+                {leader.first_name} {leader.last_name}
+              </Cell>
+            )
+          })}
+        </Group>
+      ) : null}
     </Panel>
   )
 }
