@@ -160,7 +160,7 @@ export const StatusForm = () => {
 export const StoryPopup = ({ total }) => {
   const requestStory = () => {
     const word = numWord(total, ['час', 'часа', 'часов'])
-    initStory(`Я играл в игры ${word}`, total)
+    initStory(`Я играл в игры ${total} ${word}`, total)
   }
   return (
     <Div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
