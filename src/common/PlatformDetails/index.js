@@ -12,6 +12,10 @@ import { AppContext } from '../../context'
 import DotaImg from '../../assets/dota.jpg'
 import { MODALS } from '../../constants'
 
+import { numWord } from '../../utils'
+
+import { addToFaivorite, removeFromFaivorite, getUser } from '../../api'
+
 const list = [
   { id: 1, name: 'Dota 2', description: '1 448 часов', selected: true },
   { id: 2, name: 'Dota 2', description: '1 448 часов', selected: true },
@@ -30,19 +34,42 @@ const list = [
   { id: 15, name: 'Dota 2', description: '1 448 часов', selected: false },
   { id: 16, name: 'Dota 2', description: '1 448 часов', selected: false },
 ]
-const imgSrc = 'https://sun9-24.userapi.com/c639120/v639120173/3fe6f/tgPr7lecAY4.jpg'
 
 export const GamePopup = () => {
+  const { activeModal, setUser } = useContext(AppContext)
+
+  if (!activeModal && !activeModal.props) return null
+
+  const { game } = activeModal.props
+
+  const updateUser = async () => {
+    const updUser = await getUser()
+
+    setUser(updUser)
+  }
+
+  const mark = async id => {
+    await addToFaivorite(id)
+    updateUser()
+  }
+  const unmark = async id => {
+    await removeFromFaivorite(id)
+    updateUser()
+  }
+
+  const totalHours = Math.floor(game.play_time_minutes / 60)
+  const word = numWord(totalHours, ['час', 'часа', 'часов'])
+
   return (
     <Div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <img
-        src={imgSrc}
+        src={game.logo2}
         width="72px"
         height="72px"
         style={{ borderRadius: '8px', marginBottom: 16 }}
       />
       <Title weight="medium" level="2" style={{ marginBottom: 8 }}>
-        5 132 часов
+        {totalHours} {word}
       </Title>
       <div
         style={{
@@ -59,30 +86,54 @@ export const GamePopup = () => {
       <Button before={<Icon24StoryOutline />} size="l" stretched style={{ marginBottom: 8 }}>
         Поделиться в истории
       </Button>
-      <Button mode="secondary" size="l" stretched before={<Icon24FavoriteOutline />}>
-        Добавить игру в избранное13
+      <Button
+        mode="secondary"
+        size="l"
+        stretched
+        before={<Icon24FavoriteOutline />}
+        onClick={
+          game.is_favorite
+            ? () => {
+                unmark(game.id)
+              }
+            : () => {
+                mark(game.id)
+              }
+        }
+      >
+        {game.is_favorite ? 'Удалить из избранного' : 'Добавить игру в избранное'}
       </Button>
     </Div>
   )
 }
 
-const PlatformDetails = () => {
-  const { setActiveModal } = useContext(AppContext)
+const PlatformDetails = ({ list = [] }) => {
+  const { setActiveModal, setUser } = useContext(AppContext)
 
   return (
-    <Group header={<Header mode="secondary">16 игр</Header>}>
-      {list.map(item => (
-        <Cell
-          onClick={() => {
-            setActiveModal({ key: MODALS.gameItem, props: { imgSrc: DotaImg } })
-          }}
-          description={item.description}
-          before={<Avatar mode="app" src={DotaImg} />}
-          after={item.selected ? <Icon28Favorite /> : <Icon28FavoriteOutline />}
-        >
-          {item.name}
-        </Cell>
-      ))}
+    <Group header={<Header mode="secondary">{list.length} игр</Header>}>
+      {list.map(game => {
+        const totalHours = Math.floor(game.play_time_minutes / 60)
+        const word = numWord(totalHours, ['час', 'часа', 'часов'])
+
+        return (
+          <Cell
+            onClick={() => {
+              setActiveModal({
+                key: MODALS.gameItem,
+                props: {
+                  game,
+                },
+              })
+            }}
+            description={`Игровое время ${totalHours} ${word}`}
+            before={<Avatar mode="app" src={game.logo2} />}
+            after={game.is_favorite ? <Icon28Favorite /> : <Icon28FavoriteOutline />}
+          >
+            {game.title}
+          </Cell>
+        )
+      })}
     </Group>
   )
 }

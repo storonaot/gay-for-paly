@@ -6,11 +6,15 @@ import { PANELS } from '../../constants'
 
 import PlatformDetails from '../../common/PlatformDetails'
 
-const Steam = ({ id, title }) => {
+const Steam = ({ id, title, user }) => {
+  const steamGames = Array.isArray(user.games)
+    ? user.games.filter(game => game.platform === 'steam')
+    : []
+
   return (
     <Panel id={id}>
       <PanelHeader goBack={PANELS.home} title={title} />
-      <PlatformDetails />
+      <PlatformDetails list={steamGames} />
     </Panel>
   )
 }

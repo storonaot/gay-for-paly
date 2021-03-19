@@ -10,6 +10,8 @@ import {
   HorizontalCell,
   RichCell,
   UsersStack,
+  Placeholder,
+  Button,
 } from '@vkontakte/vkui'
 
 import { PANELS, MODALS } from '../../constants'
@@ -23,66 +25,49 @@ import { AppContext } from '../../context'
 
 const Home = ({ id, user, title }) => {
   const { setActivePanel, setActiveModal } = useContext(AppContext)
-  const steamGamesTotal = 16
-  const battlenetGamesTotal = 16
 
-  const renderGames = () => (
+  const { steamGames, battleNetGames } = Array.isArray(user.games)
+    ? user.games.reduce(
+        (acc, current) => {
+          if (current.platform === 'steam') {
+            return { steamGames: [...acc.steamGames, current], battleNetGames: acc.battleNetGames }
+          }
+
+          return { steamGames: acc.steamGames, battleNetGames: [...acc.battleNetGames, current] }
+        },
+        {
+          steamGames: [],
+          battleNetGames: [],
+        },
+      )
+    : {
+        steamGames: [],
+        battleNetGames: [],
+      }
+
+  const steamGamesTotal = steamGames.length
+  const battlenetGamesTotal = battleNetGames.length
+
+  const renderGames = list => (
     <>
-      <HorizontalCell
-        size="m"
-        header="Контра Сити"
-        onClick={() => {
-          console.log('123')
-          setActiveModal({
-            key: MODALS.gameItem,
-            props: {
-              imgSrc: 'https://sun9-24.userapi.com/c639120/v639120173/3fe6f/tgPr7lecAY4.jpg',
-            },
-          })
-        }}
-      >
-        <Avatar
-          size={88}
-          mode="app"
-          src="https://sun9-24.userapi.com/c639120/v639120173/3fe6f/tgPr7lecAY4.jpg"
-        />
-      </HorizontalCell>
-      <HorizontalCell
-        size="m"
-        header="Golden Valley"
-        onClick={() => {
-          setActiveModal({
-            key: MODALS.gameItem,
-            props: {
-              imgSrc: 'https://sun9-24.userapi.com/c639120/v639120173/3fe6f/tgPr7lecAY4.jpg',
-            },
-          })
-        }}
-      >
-        <Avatar
-          size={88}
-          mode="app"
-          src="https://sun9-71.userapi.com/c849220/v849220453/147ade/0MtQXKEVsiQ.jpg"
-        />
-      </HorizontalCell>
-      <HorizontalCell
-        size="m"
-        header="Warma-geddon"
-        onClick={() => {
-          setActiveModal({
-            key: MODALS.gameItem,
-            props: {
-              imgSrc: 'https://sun9-24.userapi.com/c639120/v639120173/3fe6f/tgPr7lecAY4.jpg',
-            },
-          })
-        }}
-      >
-        <Avatar
-          size={88}
-          mode="app"
-          src="https://sun9-45.userapi.com/c846418/v846418215/5cf20/Gd9mQ6dVXTw.jpg"
-        />
-      </HorizontalCell>
+      {list.map(game => {
+        return (
+          <HorizontalCell
+            size="m"
+            header={game.title}
+            // onClick={() => {
+            //   setActiveModal({
+            //     key: MODALS.gameItem,
+            //     props: {
+            //       imgSrc: game.logo2,
+            //     },
+            //   })
+            // }}
+          >
+            <Avatar size={88} mode="app" src={game.logo2} />
+          </HorizontalCell>
+        )
+      })}
     </>
   )
 
@@ -109,31 +94,46 @@ const Home = ({ id, user, title }) => {
         header={
           <Header
             aside={
-              <Link
-                onClick={() => {
-                  setActivePanel({ name: PANELS.steam })
-                }}
-              >
-                Показать все
-              </Link>
+              steamGamesTotal ? (
+                <Link
+                  onClick={() => {
+                    setActivePanel({ name: PANELS.steam })
+                  }}
+                >
+                  {'Показать все'}
+                </Link>
+              ) : null
             }
             indicator={
-              <Counter size="s" mode="secondary">
-                {steamGamesTotal}
-              </Counter>
+              steamGamesTotal ? (
+                <Counter size="s" mode="secondary">
+                  {steamGamesTotal}
+                </Counter>
+              ) : null
             }
           >
             Мой Steam
           </Header>
         }
       >
-        <HorizontalScroll>
-          <div style={{ display: 'flex' }}>
-            {renderGames()} {renderGames()} {renderGames()}
-          </div>
-        </HorizontalScroll>
+        {steamGamesTotal ? (
+          <HorizontalScroll>
+            <div style={{ display: 'flex' }}>{renderGames(steamGames)}</div>
+          </HorizontalScroll>
+        ) : user.steam_id ? (
+          <Placeholder>Пока не добавлено ни одной игры в Steam</Placeholder>
+        ) : (
+          <Placeholder
+            onClick={() => {
+              setActivePanel({ name: PANELS.settings })
+            }}
+            action={<Button size="m">Подключить Steam</Button>}
+          >
+            Подключите платформу Steam
+          </Placeholder>
+        )}
       </Group>
-      <Group
+      {/* <Group
         header={
           <Header
             aside={
@@ -160,7 +160,7 @@ const Home = ({ id, user, title }) => {
             {renderGames()} {renderGames()} {renderGames()}
           </div>
         </HorizontalScroll>
-      </Group>
+      </Group> */}
     </Panel>
   )
 }

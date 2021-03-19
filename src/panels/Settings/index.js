@@ -11,7 +11,6 @@ import BattlenetIcon from '../../assets/battlenet.jpg'
 import s from './styles.module.css'
 import { getUser, updatePrivateStatus } from '../../api'
 import { AppContext } from '../../context'
-import { MODALS } from '../../constants'
 
 const menu = [
   { id: 1, label: 'Все' },

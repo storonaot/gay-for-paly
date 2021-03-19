@@ -62,3 +62,17 @@ export const updatePrivateStatus = privateStatus =>
     method: 'POST',
     body: JSON.stringify({ private_status: privateStatus }),
   }).then(toJSON)
+
+export const addToFaivorite = gameId =>
+  fetch(`${URL}/add-to-favorite`, {
+    ...defaultOptions,
+    method: 'POST',
+    body: JSON.stringify({ game_id: gameId }),
+  })
+
+export const removeFromFaivorite = gameId =>
+  fetch(`${URL}/remove-from-favorite`, {
+    ...defaultOptions,
+    method: 'POST',
+    body: JSON.stringify({ game_id: gameId }),
+  })

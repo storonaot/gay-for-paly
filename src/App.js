@@ -139,7 +139,7 @@ const App = () => {
           popout={activePopout}
           modal={<Modal activeModal={activeModal} />}
         >
-          <Steam id={PANELS.steam} title="Мой Steam" />
+          <Steam id={PANELS.steam} title="Мой Steam" user={user} />
         </View>
         <View id={PANELS.buttleNet} activePanel={PANELS.buttleNet} popout={activePopout}>
           <BattleNet id={PANELS.buttleNet} title="Мой Battle.net" />
