@@ -93,6 +93,7 @@ const Settings = ({ id, title, user }) => {
     <>
       {menu.map(item => (
         <ActionSheetItem
+          key={item.id}
           autoclose
           selectable
           checked={activeMenuItem.id === item.id}
