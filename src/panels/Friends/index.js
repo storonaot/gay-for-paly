@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Avatar, Group, Header, Panel, Placeholder, ScreenSpinner, SimpleCell } from '@vkontakte/vkui'
+import { Avatar, Group, Header, Panel, Placeholder, RichCell, ScreenSpinner, SimpleCell } from '@vkontakte/vkui'
 
 import { PANELS } from '../../constants'
 
 import PanelHeader from '../../common/PanelHeader'
 import { AppContext } from '../../context'
 import { getFriends } from '../../api'
+import Icon28MessageOutline from '@vkontakte/icons/dist/28/message_outline'
 
 const Friends = ({ id, title }) => {
   const { setActivePanel, setActivePopout } = useContext(AppContext)
@@ -24,6 +25,10 @@ const Friends = ({ id, title }) => {
     }
     fetchData()
   }, [])
+
+  const openChat = (userId) => {
+    window.open(`https://vk.com/im?sel=${userId}`)
+  }
 
   return (
     <Panel id={id}>
@@ -47,6 +52,9 @@ const Friends = ({ id, title }) => {
                 }}
                 description={accounts.join(', ')}
                 before={<Avatar src={friend.avatar} />}
+                after={<Icon28MessageOutline onClick={() => {
+                  openChat(friend.vk_user_id)
+                }} />}
               >
                 {friend.first_name} {friend.last_name}
               </SimpleCell>
