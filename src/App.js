@@ -15,7 +15,7 @@ import Settings from './panels/Settings'
 import Profile from './panels/Profile'
 import Home from './panels/Home'
 import Steam from './panels/Steam'
-import BattleNet from './panels/BattleNet'
+import Wargaming from './panels/Wargaming'
 
 import { signIn } from './api'
 
@@ -141,8 +141,13 @@ const App = () => {
         >
           <Steam id={PANELS.steam} title="Мой Steam" user={user} />
         </View>
-        <View id={PANELS.buttleNet} activePanel={PANELS.buttleNet} popout={activePopout}>
-          <BattleNet id={PANELS.buttleNet} title="Мой Battle.net" />
+        <View
+          id={PANELS.wargaming}
+          activePanel={PANELS.wargaming}
+          popout={activePopout}
+          modal={<Modal activeModal={activeModal} />}
+        >
+          <Wargaming id={PANELS.wargaming} title="Мой Wargaming" user={user} />
         </View>
       </Epic>
     </AppContext.Provider>

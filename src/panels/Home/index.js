@@ -18,35 +18,36 @@ import { PANELS, MODALS } from '../../constants'
 import { Icon28ChevronRightOutline } from '@vkontakte/icons'
 
 import SteamIcon from '../../assets/steam.jpg'
-import BattlenetIcon from '../../assets/battlenet.jpg'
+import WargamingIcon from '../../assets/wargaming.jpeg'
 
 import PanelHeader from '../../common/PanelHeader'
 import { AppContext } from '../../context'
+import Wargaming from '../Wargaming'
 
 const Home = ({ id, user, title }) => {
   const { setActivePanel, setActiveModal } = useContext(AppContext)
 
-  const { steamGames, battleNetGames } = Array.isArray(user.games)
+  const { steamGames, wargamingGames } = Array.isArray(user.games)
     ? user.games.reduce(
-        (acc, current) => {
-          if (current.platform === 'steam') {
-            return { steamGames: [...acc.steamGames, current], battleNetGames: acc.battleNetGames }
-          }
+      (acc, current) => {
+        if (current.platform === 'steam') {
+          return { steamGames: [...acc.steamGames, current], wargamingGames: acc.wargamingGames }
+        }
 
-          return { steamGames: acc.steamGames, battleNetGames: [...acc.battleNetGames, current] }
-        },
-        {
-          steamGames: [],
-          battleNetGames: [],
-        },
-      )
-    : {
+        return { steamGames: acc.steamGames, wargamingGames: [...acc.wargamingGames, current] }
+      },
+      {
         steamGames: [],
-        battleNetGames: [],
-      }
+        wargamingGames: [],
+      },
+    )
+    : {
+      steamGames: [],
+      wargamingGames: [],
+    }
 
   const steamGamesTotal = steamGames.length
-  const battlenetGamesTotal = battleNetGames.length
+  const wargamingGamesTotal = wargamingGames.length
 
   const renderGames = list => (
     <>
@@ -78,12 +79,12 @@ const Home = ({ id, user, title }) => {
       {user && (
         <Group>
           <RichCell
-            after={<Icon28ChevronRightOutline fill="var(--button_primary_background)" />}
+            after={<Icon28ChevronRightOutline fill='var(--button_primary_background)' />}
             onClick={() => {
               setActivePanel({ name: PANELS.profile, id: user.vk_user_id })
             }}
             multiline
-            bottom={<UsersStack photos={[SteamIcon, BattlenetIcon]} />}
+            bottom={<UsersStack photos={[SteamIcon, WargamingIcon]} />}
             before={user.avatar ? <Avatar src={user.avatar} size={72} /> : null}
           >
             {`${user.first_name} ${user.last_name}`}
@@ -133,34 +134,49 @@ const Home = ({ id, user, title }) => {
           </Placeholder>
         )}
       </Group>
-      {/* <Group
+      <Group
         header={
           <Header
             aside={
-              <Link
-                onClick={() => {
-                  setActivePanel({ name: PANELS.buttleNet })
-                }}
-              >
-                Показать все
-              </Link>
+              wargamingGamesTotal ? (
+                <Link
+                  onClick={() => {
+                    setActivePanel({ name: PANELS.wargaming })
+                  }}
+                >
+                  {'Показать все'}
+                </Link>
+              ) : null
             }
             indicator={
-              <Counter size="s" mode="secondary">
-                {battlenetGamesTotal}
-              </Counter>
+              wargamingGamesTotal ? (
+                <Counter size='s' mode='secondary'>
+                  {wargamingGamesTotal}
+                </Counter>
+              ) : null
             }
           >
-            Мой Battle.net
+            Мой Wargaming
           </Header>
         }
       >
-        <HorizontalScroll>
-          <div style={{ display: 'flex' }}>
-            {renderGames()} {renderGames()} {renderGames()}
-          </div>
-        </HorizontalScroll>
-      </Group> */}
+        {wargamingGamesTotal ? (
+          <HorizontalScroll>
+            <div style={{ display: 'flex' }}>{renderGames(wargamingGames)}</div>
+          </HorizontalScroll>
+        ) : user.wargaming_id ? (
+          <Placeholder>Пока не добавлено ни одной игры в Wargaming</Placeholder>
+        ) : (
+          <Placeholder
+            onClick={() => {
+              setActivePanel({ name: PANELS.settings })
+            }}
+            action={<Button size='m'>Подключить Wargaming</Button>}
+          >
+            Подключите платформу Wargaming
+          </Placeholder>
+        )}
+      </Group>
     </Panel>
   )
 }

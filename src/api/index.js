@@ -84,12 +84,11 @@ export const removeFromFaivorite = (gameId, platform) =>
     body: JSON.stringify({ game_id: gameId, platform }),
   })
 
-export const detachSteam = () =>
-  fetch(`${URL}/detach/steam`, {
+export const detachPlatform = (platform) =>
+  fetch(`${URL}/detach/${platform}`, {
     ...defaultOptions,
     method: 'POST',
   }).then(response => {
-    console.log('response', response)
     if (response.ok) {
       return fetch(`${URL}/sign-in`, {
         ...defaultOptions,

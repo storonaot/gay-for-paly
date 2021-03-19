@@ -36,6 +36,9 @@ const Friends = ({ id, title }) => {
             if (friend.steam_id) {
               accounts.push('Steam')
             }
+            if (friend.wargaming_id) {
+              accounts.push('Wargaming')
+            }
             return (
               <SimpleCell
                 key={friend.vk_user_id}

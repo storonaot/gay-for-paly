@@ -28,8 +28,10 @@ import { MODALS, PANELS } from '../../constants'
 import { getFriends, getUser, removeFromFaivorite, setStatus } from '../../api'
 
 import SteamIcon from '../../assets/steam.jpg'
+import WargamingIcon from '../../assets/wargaming.jpeg'
 
 import { initStory, numWord } from '../../utils'
+import Wargaming from '../Wargaming'
 
 const FavoriteGames = ({ games, showAction }) => {
   const { setUser } = useContext(AppContext)
@@ -83,7 +85,15 @@ const Accounts = ({ user }) => {
       title: 'Steam',
     })
   }
-
+  if (user && user.wargaming_id) {
+    accounts.push({
+      id: 2,
+      nickname: user.wargaming_username,
+      avatar: WargamingIcon,
+      title: 'Wargaming',
+    })
+    console.log(user)
+  }
   return (
     <Group>
       <Header mode="primary">Аккаунты</Header>
