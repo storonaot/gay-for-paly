@@ -55,7 +55,7 @@ const Home = ({ id, user, title }) => {
         return (
           <HorizontalCell
             key={game.game_id}
-            size="m"
+            size='m'
             header={game.title}
             onClick={() => {
               setActiveModal({
@@ -66,31 +66,40 @@ const Home = ({ id, user, title }) => {
               })
             }}
           >
-            <Avatar size={88} mode="app" src={game.logo1 || game.logo2} />
+            <Avatar size={88} mode='app' src={game.logo1 || game.logo2} />
           </HorizontalCell>
         )
       })}
     </>
   )
 
+  let iconsStack = []
+  if (user.steam_id) {
+    iconsStack.push(SteamIcon)
+  }
+  if (user.wargaming_id) {
+    iconsStack.push(WargamingIcon)
+  }
   return (
     <Panel id={id}>
       <PanelHeader title={title} />
-      {user && (
-        <Group>
-          <RichCell
-            after={<Icon28ChevronRightOutline fill='var(--button_primary_background)' />}
-            onClick={() => {
-              setActivePanel({ name: PANELS.profile, id: user.vk_user_id })
-            }}
-            multiline
-            bottom={<UsersStack photos={[SteamIcon, WargamingIcon]} />}
-            before={user.avatar ? <Avatar src={user.avatar} size={72} /> : null}
-          >
-            {`${user.first_name} ${user.last_name}`}
-          </RichCell>
-        </Group>
-      )}
+      {
+        user && (
+          <Group>
+            <RichCell
+              after={<Icon28ChevronRightOutline fill='var(--button_primary_background)' />}
+              onClick={() => {
+                setActivePanel({ name: PANELS.profile, id: user.vk_user_id })
+              }}
+              multiline
+              bottom={<UsersStack
+                photos={iconsStack} />}
+              before={user.avatar ? <Avatar src={user.avatar} size={72} /> : null}
+            >
+              {`${user.first_name} ${user.last_name}`}
+            </RichCell>
+          </Group>
+        )}
       <Group
         header={
           <Header
@@ -107,7 +116,7 @@ const Home = ({ id, user, title }) => {
             }
             indicator={
               steamGamesTotal ? (
-                <Counter size="s" mode="secondary">
+                <Counter size='s' mode='secondary'>
                   {steamGamesTotal}
                 </Counter>
               ) : null
@@ -128,7 +137,7 @@ const Home = ({ id, user, title }) => {
             onClick={() => {
               setActivePanel({ name: PANELS.settings })
             }}
-            action={<Button size="m">Подключить Steam</Button>}
+            action={<Button size='m'>Подключить Steam</Button>}
           >
             Подключите платформу Steam
           </Placeholder>
