@@ -13,7 +13,7 @@ import { getUser, updatePrivateStatus, detachPlatform } from '../../api'
 import { AppContext } from '../../context'
 
 const menu = [
-  // { id: 1, label: 'Все' },
+  { id: 1, label: 'Все' },
   { id: 2, label: 'Друзья' },
   { id: 3, label: 'Никто' },
 ]
@@ -21,14 +21,17 @@ const menu = [
 const Settings = ({ id, title, user }) => {
   const platforms = [
     { id: 1, label: 'Steam', iconSrc: SteamIcon, connected: user ? user.steam_id : null },
-    { id: 2, label: 'Wargaming', iconSrc: WargamingIcon, connected: user ? user.wargaming_id : null },
+    {
+      id: 2,
+      label: 'Wargaming',
+      iconSrc: WargamingIcon,
+      connected: user ? user.wargaming_id : null,
+    },
     // { id: 3, label: 'VK Game', iconSrc: BattlenetIcon, connected: false },
   ]
 
   const [activeMenuItem, setActiveMenuItem] = useState(
-    Number(user.private_status) === 1
-      ? menu.find(item => item.id === 2)
-      : menu.find(item => item.id === Number(user.private_status)),
+    menu.find(item => item.id === Number(user.private_status)),
   )
 
   const { setActivePopout, setUser } = useContext(AppContext)
@@ -45,7 +48,7 @@ const Settings = ({ id, title, user }) => {
         onClose={() => {
           setActivePopout(null)
         }}
-        text='Подключение к аккаунту Steam'
+        text="Подключение к аккаунту Steam"
       />,
     )
 
@@ -81,14 +84,13 @@ const Settings = ({ id, title, user }) => {
             onClose={() => {
               setActivePopout(null)
             }}
-            text='Не удалось подключиться к аккаунту Steam'
+            text="Не удалось подключиться к аккаунту Steam"
           />,
         )
 
       setUser(updatedUser)
     }
   }
-
 
   const fetchWargamingUser = async () => {
     const updatedUser = await getUser()
@@ -113,7 +115,7 @@ const Settings = ({ id, title, user }) => {
             onClose={() => {
               setActivePopout(null)
             }}
-            text='Не удалось подключиться к аккаунту Wargaming'
+            text="Не удалось подключиться к аккаунту Wargaming"
           />,
         )
 
@@ -133,7 +135,7 @@ const Settings = ({ id, title, user }) => {
         onClose={() => {
           setActivePopout(null)
         }}
-        text='Подключение к аккаунту Wargaming'
+        text="Подключение к аккаунту Wargaming"
       />,
     )
 
@@ -181,7 +183,7 @@ const Settings = ({ id, title, user }) => {
           content={
             <ActionSheetItem
               autoclose
-              mode='destructive'
+              mode="destructive"
               onClick={() => {
                 detach(platform)
               }}
@@ -204,7 +206,7 @@ const Settings = ({ id, title, user }) => {
 
   return (
     <Panel id={id}>
-      <PanelHeader title={title} goBack='home' />
+      <PanelHeader title={title} goBack="home" />
       <Group>
         <Cell
           after={

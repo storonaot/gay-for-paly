@@ -33,11 +33,13 @@ const Home = ({ id, user, title }) => {
   const { setActivePanel, setActiveModal } = useContext(AppContext)
   const [leaders, setLeaders] = useState([])
 
-  useEffect(async () => {
-    const resLeaders = await getLeaders()
-
-    setLeaders(resLeaders)
-  }, [])
+  useEffect(() => {
+    const fetchData = async () => {
+      const resLeaders = await getLeaders()
+      setLeaders(resLeaders)
+    }
+    fetchData()
+  })
 
   const { steamGames, wargamingGames } = Array.isArray(user.games)
     ? user.games.reduce(
